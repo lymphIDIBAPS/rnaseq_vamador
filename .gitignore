@@ -1,0 +1,7 @@
+.snakemake/
+*.pdf
+FASTQC/
+idx/
+readb/
+results/
+*.idx
