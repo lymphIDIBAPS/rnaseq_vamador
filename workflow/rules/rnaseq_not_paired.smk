@@ -34,13 +34,13 @@ rule rna_filtering_not_paired:
         aligned = "results/sortmerna_files/unpaired/rRNA/{sample}",
         other = "results/sortmerna_files/unpaired/rRNAf/{sample}",
         threads = 24
+    shadow: "minimal"
     conda:
         "../envs/rnaseq.yaml"
     shell:
         """
         mkdir -p results/sortmerna_files/unpaired/rRNA results/sortmerna_files/unpaired/rRNAf
         sortmerna --ref /home/oscar/rnaseq/resources/rRNA_databases_v4/smr_v4.3_default_db.fasta --reads {input.reads} --aligned {params.aligned} --other {params.other} --workdir /home/oscar/rnaseq --fastx -threads {params.threads} -v --idx-dir ./idx
-        rm -r ./kvdb
         """
 
 # --kvdb {params.kvdb}
