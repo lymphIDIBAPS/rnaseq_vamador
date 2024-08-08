@@ -1,0 +1,19 @@
+name: rnaseq_snakemake
+channels:
+  - conda-forge
+  - defaults
+  - bioconda
+dependencies:
+  - python
+  # should be sortmerna=4.3.2, but conda cant solve env with 4.3.2
+  - sortmerna=4.3.2
+  - trimmomatic=0.39
+  - kallisto=0.46.1
+  - gsea
+
+  ## R (Bioconductor)
+  - bioconductor-tximport=1.12.3
+  - bioconductor-deseq2=1.24.0
+
+  ## R (CRAN)
+  - r-base
