@@ -4,7 +4,7 @@
 
 
 # Define the directory containing the FASTQ files
-fastq_dir = "resources/rna_paired/unmerged"
+fastq_dir = "FASTQ/rna_paired/unmerged"
 
 # Define patterns to match specific files
 L1_F = glob_wildcards(fastq_dir + "/{sample}_1_1.fastq").sample
@@ -19,37 +19,37 @@ L2_R = glob_wildcards(fastq_dir + "/{sample}_2_2.fastq").sample
 
 
 ## merge_technical_replicates: merge data from L1_F and L2_F
-## .fastq files must be located in a directory named resources/rna_paired
-## output will be directed to a directory named resources/rna_paired/merged
+## .fastq files must be located in a directory named FASTQ/rna_paired
+## output will be directed to a directory named FASTQ/rna_paired/merged
 
 
 rule merge_technical_replicates:
     input:
-        L1_F = "resources/rna_paired/unmerged/{sample}_1_1.fastq",
-        L2_F = "resources/rna_paired/unmerged/{sample}_2_1.fastq",
-        L1_R = "resources/rna_paired/unmerged/{sample}_1_2.fastq",
-        L2_R = "resources/rna_paired/unmerged/{sample}_2_2.fastq",
+        L1_F = "FASTQ/rna_paired/unmerged/{sample}_1_1.fastq",
+        L2_F = "FASTQ/rna_paired/unmerged/{sample}_2_1.fastq",
+        L1_R = "FASTQ/rna_paired/unmerged/{sample}_1_2.fastq",
+        L2_R = "FASTQ/rna_paired/unmerged/{sample}_2_2.fastq",
     output:
-        merged_F = "resources/rna_paired/merged/{sample}_mergedF.fastq",
-        merged_R = "resources/rna_paired/merged/{sample}_mergedR.fastq",
+        merged_F = "FASTQ/rna_paired/merged/{sample}_mergedF.fastq",
+        merged_R = "FASTQ/rna_paired/merged/{sample}_mergedR.fastq",
     shell:
         """
-        mkdir -p resources/rna_paired/merged
+        mkdir -p FASTQ/rna_paired/merged
         cat {input.L1_F} {input.L2_F} > {output.merged_F}
         cat {input.L1_R} {input.L2_R} > {output.merged_R}
         """
 
 
 ## rna_filtering: filter RNA
-## .fastq files must be located in a directory named resources/rna_paired/merged
+## .fastq files must be located in a directory named FASTQ/rna_paired/merged
 ## output will be directed to a directory named results/sortmerna_files/rRNA or /rRNAf, 
 ## the first are aligned reads and the second rejected reads 
 
 
 rule rna_filtering:
     input:
-        merged_F = "resources/rna_paired/merged/{sample}_mergedF.fastq",
-        merged_R = "resources/rna_paired/merged/{sample}_mergedR.fastq",
+        merged_F = "FASTQ/rna_paired/merged/{sample}_mergedF.fastq",
+        merged_R = "FASTQ/rna_paired/merged/{sample}_mergedR.fastq",
     output:
         aligned = "results/sortmerna_files/rRNA/{sample}_rev.fq",
         forward = "results/sortmerna_files/rRNAf/{sample}_fwd.fq",
