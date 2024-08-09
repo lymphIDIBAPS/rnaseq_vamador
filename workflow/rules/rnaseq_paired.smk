@@ -2,13 +2,9 @@
 ##
 # configfile: "config/config.yaml"
 
-FASTQ_suffix = "fastq"
-
-import glob
-import os
 
 # Define the directory containing the FASTQ files
-fastq_dir = "resources/rna_paired"
+fastq_dir = "resources/rna_paired/unmerged"
 
 # Define patterns to match specific files
 L1_F = glob_wildcards(fastq_dir + "/{sample}_1_1.fastq").sample
@@ -29,10 +25,10 @@ L2_R = glob_wildcards(fastq_dir + "/{sample}_2_2.fastq").sample
 
 rule merge_technical_replicates:
     input:
-        L1_F = "resources/rna_paired/{sample}_1_1.fastq",
-        L2_F = "resources/rna_paired/{sample}_2_1.fastq",
-        L1_R = "resources/rna_paired/{sample}_1_2.fastq",
-        L2_R = "resources/rna_paired/{sample}_2_2.fastq",
+        L1_F = "resources/rna_paired/unmerged/{sample}_1_1.fastq",
+        L2_F = "resources/rna_paired/unmerged/{sample}_2_1.fastq",
+        L1_R = "resources/rna_paired/unmerged/{sample}_1_2.fastq",
+        L2_R = "resources/rna_paired/unmerged/{sample}_2_2.fastq",
     output:
         merged_F = "resources/rna_paired/merged/{sample}_mergedF.fastq",
         merged_R = "resources/rna_paired/merged/{sample}_mergedR.fastq",
@@ -56,6 +52,7 @@ rule rna_filtering:
         merged_R = "resources/rna_paired/merged/{sample}_mergedR.fastq",
     output:
         aligned = "results/sortmerna_files/rRNA/{sample}_rev.fq",
+        forward = "results/sortmerna_files/rRNAf/{sample}_fwd.fq",
         other = "results/sortmerna_files/rRNAf/{sample}_rev.fq",
     params:
         aligned = "results/sortmerna_files/rRNA/{sample}",
@@ -155,28 +152,26 @@ rule kallisto_index:
 # kallisto index -i Homo_sapiens.GRCh38.cdna.all.release-100.idx Homo_sapiens.GRCh38.cdna.all.fa.gz
 
 
-# Define patterns to match specific files
-for_paired = glob_wildcards("results/trimmomatic_files/{sample}_fwd_p.fq.gz").sample
-rev_paired = glob_wildcards("results/trimmomatic_files/{sample}_rev_p.fq.gz").sample
-
-
 ## kallisto_quant: runs the quantification algorithm
 ## outputs three files: abundance.h5, read by sleuth; abundance.tsv wich is plaintext and run_info.json, a log file
 
 rule kallisto_quant:
     input:
         index_path = "resources/kallisto/Homo_sapiens.GRCh38.cdna.all.release-100.idx",
-        rev_paired = expand("results/trimmomatic_files/{sample}_rev_p.fq.gz", sample = rev_paired),
-        for_paired = expand("results/trimmomatic_files/{sample}_fwd_p.fq.gz", sample = for_paired),
+        rev_paired = "results/trimmomatic_files/{sample}_rev_p.fq.gz",
+        for_paired = "results/trimmomatic_files/{sample}_fwd_p.fq.gz",
+    # wildcard_constraints:
+    #    sample = "^(?!unpaired/).*"  # Exclude any sample from the "unpaired/" directory
     output:
-        abundance = "results/kallisto_files/abundance.h5"
+        abundance = "results/kallisto_files/{sample}/abundance.h5",
+        abundance_tsv = "results/kallisto_files/{sample}/abundance.tsv",
     conda:
         "../envs/rnaseq.yaml"
     params:
         threads = 24,
-        output_dir = "results/kallisto_files"
+        output_dir = "results/kallisto_files/{sample}/"
     shell:
         """
+        mkdir -p {params.output_dir}
         kallisto quant -i {input.index_path} -o {params.output_dir} -t {params.threads} {input.for_paired} {input.rev_paired}
         """
-

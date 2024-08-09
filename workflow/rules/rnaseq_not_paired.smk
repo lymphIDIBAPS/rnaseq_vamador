@@ -13,34 +13,14 @@ sample_name = glob_wildcards(single_end_dir + "/{sample}.fastq").sample
 ## output will be directed to a directory named results/sortmerna_files/unpaired/rRNA or /rRNAf, 
 ## the first are aligned reads and the second rejected reads 
 
-# I comment this so i will try to apply this rule with a wrapper: https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/sortmerna.html
 
-# rule rna_filtering_not_paired:
-#     input:
-#         reads = "FASTQ/single_end/{sample}.fastq",
-#     output:
-#         aligned = "results/sortmerna_files/unpaired/rRNA/{sample}.log"
-#     params:
-#         aligned = "results/sortmerna_files/unpaired/rRNA/{sample}",
-#         other = "results/sortmerna_files/unpaired/rRNAf/{sample}",
-#         threads = 24
-#     shadow: "minimal"
-#     conda:
-#         "../envs/rnaseq.yaml"
-#     shell:
-#         """
-#         mkdir -p results/sortmerna_files/unpaired/rRNA results/sortmerna_files/unpaired/rRNAf
-#         sortmerna --ref /home/oscar/rnaseq/resources/rRNA_databases_v4/smr_v4.3_default_db.fasta --reads {input.reads} --aligned {params.aligned} --other {params.other} --workdir /home/oscar/rnaseq --fastx -threads {params.threads} -v --idx-dir ./idx
-#         """
-
-
-rule sortmerna_se:
+rule rna_filtering_not_paired:
     input:
         ref = ["/home/oscar/rnaseq/resources/rRNA_databases_v4/smr_v4.3_default_db.fasta"],
-        reads = "FASTQ/single_end/{sample}.fastq",
+        reads = expand("FASTQ/single_end/{sample}.fastq", sample = sample_name)
     output:
-        aligned = "results/sortmerna_files/unpaired/rRNA/{sample}",
-        other = "results/sortmerna_files/unpaired/rRNAf/{sample}",
+        aligned = "results/sortmerna_files/unpaired/rRNA/{sample}.fq",
+        other = "results/sortmerna_files/unpaired/rRNAf/{sample}.fq",
         stats = "results/sortmerna_files/unpaired/rRNA/{sample}.log",
     params:
         extra = "--idx-dir ./idx",
@@ -53,7 +33,10 @@ rule sortmerna_se:
         "v3.14.0/bio/sortmerna"
 
 
-## Trimming reads
+## rna_trimming_not_paired: trim and crop data
+## trim and crop Illumina (FASTQ) data and remove adapters.
+## .fq files will be located in a directory named results/sortmerna_files/unpaired/rRNAf
+## output will be directed to a directory named results/trimmomatic_files/unpaired/{sample}
 
 rule rna_trimming_not_paired:
     input:
@@ -84,6 +67,11 @@ rule rna_trimming_not_paired:
 # Single-end mode requires 1 input files and outputs 1 file.
 
 
+## kallisto_quant: runs the quantification algorithm
+## outputs three files: abundance.h5, read by sleuth; abundance.tsv wich is plaintext and run_info.json, a log file
+## The index is constructed with the rule kallisto_index in the rnaseq_paired.smk file
+
+
 rule kallisto_quant_not_paired:
     input:
         index_path = "resources/kallisto/Homo_sapiens.GRCh38.cdna.all.release-100.idx",
@@ -100,8 +88,3 @@ rule kallisto_quant_not_paired:
         mkdir -p {params.output_dir}
         kallisto quant -i {input.index_path} -o {params.output_dir} --single -l 260 -s 20 -t {params.threads} {input.sample_not_paired}
         """
-
-# kallisto quant -i ./Homo_sapiens.GRCh38.cdna.all.release-100.idx 
-# -o ./Kallisto_files/ZWT1_aligned 
-# --single -l 260 -s 20 --threads=16 
-# ./Trimmomatic_files/ZWT1_trimmed.fq.gz

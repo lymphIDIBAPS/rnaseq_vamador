@@ -4,9 +4,9 @@
 
 
 fastq_samples = glob_wildcards("resources/rna_paired/unmerged/{sample}.fastq").sample
-single_end_fastq_samples = glob_wildcards("./FASTQ/single_end/{sample}.fastq").sample
-filtered_rna_samples_fwd = glob_wildcards("./results/sortmerna_files/rRNAf/{sample}_fwd.fq").sample
-filtered_rna_samples_rev = glob_wildcards("./results/sortmerna_files/rRNAf/{sample}_rev.fq").sample
+single_end_fastq_samples = glob_wildcards("FASTQ/single_end/{sample}.fastq").sample
+filtered_rna_samples_fwd = glob_wildcards("results/sortmerna_files/rRNAf/{sample}_fwd.fq").sample
+filtered_rna_samples_rev = glob_wildcards("results/sortmerna_files/rRNAf/{sample}_rev.fq").sample
 unpaired_rna_samples = glob_wildcards("./results/sortmerna_files/unpaired/rRNAf/{sample}.fq").sample
 trimmed_fwd_paired_rna_samples = glob_wildcards("./results/trimmomatic_files/{sample}_fwd_p.fq.gz").sample
 trimmed_unpaired_rna_samples = glob_wildcards ("results/trimmomatic_files/unpaired/{sample}_fwd.fq.gz").sample
@@ -55,7 +55,7 @@ rule single_end_fastq_to_fastqc:
         """
 
 
-## filtered__fwd_rna_to_fastqc: quality control checks on filtered forward sequence data
+## filtered_fwd_rna_to_fastqc: quality control checks on filtered forward sequence data
 ## .fastq files must be located in a directory named /sortmerna_files and end with *_rRNA_filtered.fastq
 ## output will be directed to a directory named /FASTQC/sortmerna/filtered/{sample}
 
