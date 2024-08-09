@@ -13,61 +13,44 @@ sample_name = glob_wildcards(single_end_dir + "/{sample}.fastq").sample
 ## output will be directed to a directory named results/sortmerna_files/unpaired/rRNA or /rRNAf, 
 ## the first are aligned reads and the second rejected reads 
 
-# rule make_directory:
+# I comment this so i will try to apply this rule with a wrapper: https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/sortmerna.html
+
+# rule rna_filtering_not_paired:
 #     input:
-#         reads = "FASTQ/single_end/"
+#         reads = "FASTQ/single_end/{sample}.fastq",
 #     output:
-#         dir = directory("results/sortmerna_files/unpaired/rRNA")
+#         aligned = "results/sortmerna_files/unpaired/rRNA/{sample}.log"
+#     params:
+#         aligned = "results/sortmerna_files/unpaired/rRNA/{sample}",
+#         other = "results/sortmerna_files/unpaired/rRNAf/{sample}",
+#         threads = 24
+#     shadow: "minimal"
+#     conda:
+#         "../envs/rnaseq.yaml"
 #     shell:
 #         """
-#         mkdir results/sortmerna_files/unpaired/rRNA
-#         mkdir results/sortmerna_files/unpaired/rRNAf
+#         mkdir -p results/sortmerna_files/unpaired/rRNA results/sortmerna_files/unpaired/rRNAf
+#         sortmerna --ref /home/oscar/rnaseq/resources/rRNA_databases_v4/smr_v4.3_default_db.fasta --reads {input.reads} --aligned {params.aligned} --other {params.other} --workdir /home/oscar/rnaseq --fastx -threads {params.threads} -v --idx-dir ./idx
 #         """
 
 
-rule rna_filtering_not_paired:
+rule sortmerna_se:
     input:
+        ref = ["/home/oscar/rnaseq/resources/rRNA_databases_v4/smr_v4.3_default_db.fasta"],
         reads = "FASTQ/single_end/{sample}.fastq",
     output:
-        aligned = "results/sortmerna_files/unpaired/rRNA/{sample}.log"
-    params:
         aligned = "results/sortmerna_files/unpaired/rRNA/{sample}",
         other = "results/sortmerna_files/unpaired/rRNAf/{sample}",
-        threads = 24
-    shadow: "minimal"
-    conda:
-        "../envs/rnaseq.yaml"
-    shell:
-        """
-        mkdir -p results/sortmerna_files/unpaired/rRNA results/sortmerna_files/unpaired/rRNAf
-        sortmerna --ref /home/oscar/rnaseq/resources/rRNA_databases_v4/smr_v4.3_default_db.fasta --reads {input.reads} --aligned {params.aligned} --other {params.other} --workdir /home/oscar/rnaseq --fastx -threads {params.threads} -v --idx-dir ./idx
-        """
-
-# --kvdb {params.kvdb}
-
-# mkdir -p results/sortmerna_files/unpaired/rRNA results/sortmerna_files/unpaired/rRNAf
-# sortmerna --ref /home/oscar/rnaseq/resources/rRNA_databases_v4/smr_v4.3_default_db.fasta --reads FASTQ/single_end/Zcr2_02161AAC_CAGATC.fastq --aligned results/sortmerna_files/unpaired/rRNA/Zcr2_02161AAC_CAGATC --other results/sortmerna_files/unpaired/rRNAf/Zcr2_02161AAC_CAGATC --workdir /home/oscar/rnaseq --fastx -threads 24 -v --idx-dir ./idx
-# rm -r ./kvdb/
-
-# mkdir -p results/sortmerna_files/unpaired/rRNA results/sortmerna_files/unpaired/rRNAf
-# sortmerna --ref /home/oscar/rnaseq/resources/rRNA_databases_v4/smr_v4.3_default_db.fasta --reads FASTQ/single_end/Zcr3_02163AAC_AGTTCC.fastq --aligned results/sortmerna_files/unpaired/rRNA/Zcr3_02163AAC_AGTTCC --other results/sortmerna_files/unpaired/rRNAf/Zcr3_02163AAC_AGTTCC --workdir /home/oscar/rnaseq --fastx -threads 24 -v --idx-dir ./idx
-# rm -r ./kvdb/
-
-#Sample Z138WT1
-
-# sortmerna --ref ./sortmernaDB/silva-bac-16s-id90.fasta,
-# ./sortmernaDB/index/silva-bac-16s-db:./sortmernaDB/silva-bac-23s-id98.fasta,
-# ./sortmernaDB/index/silva-bac-23s-db:./sortmernaDB/silva-arc-16s-id95.fasta,
-# ./sortmernaDB/index/silva-arc-16s-db:./sortmernaDB/silva-arc-23s-id98.fasta,
-# ./sortmernaDB/index/silva-arc-23s-db:./sortmernaDB/silva-euk-18s-id95.fasta,
-# ./sortmernaDB/index/silva-euk-18s-db:./sortmernaDB/silva-euk-28s-id98.fasta,
-# ./sortmernaDB/index/silva-euk-28s:./sortmernaDB/rfam-5s-database-id98.fasta,
-# ./sortmernaDB/index/rfam-5s-db:./sortmernaDB/rfam-5.8s-database-id98.fasta,
-# ./sortmernaDB/index/rfam-5.8s-db 
-# --reads ./FASTQ/Zwt1_02158AAC_ATCACG.fastq 
-# --aligned ./sortmerna_files/ZWT1_rRNA 
-# --other ./sortmerna_files/ZWT1_rRNAf 
-# --fastx --log -a 16 -v
+        stats = "results/sortmerna_files/unpaired/rRNA/{sample}.log",
+    params:
+        extra = "--idx-dir ./idx",
+    threads: 24
+    resources:
+        mem_mb=4096,  # amount of memory for building the index
+    log:
+        "workflow/report/{sample}_se.log",
+    wrapper:
+        "v3.14.0/bio/sortmerna"
 
 
 ## Trimming reads
@@ -104,12 +87,12 @@ rule rna_trimming_not_paired:
 rule kallisto_quant_not_paired:
     input:
         index_path = "resources/kallisto/Homo_sapiens.GRCh38.cdna.all.release-100.idx",
-        sample_not_paired = expand("results/trimmomatic_files/unpaired/{sample}_fwd.fq.gz", sample = sample_name)
+        sample_not_paired = "results/trimmomatic_files/unpaired/{sample}_fwd.fq.gz",
     output:
-        abundance = "results/kallisto_files/unpaired/abundance.h5"
+        abundance = "results/kallisto_files/unpaired/{sample}/abundance.h5"
     params:
         threads = 24,
-        output_dir = "results/kallisto_files/unpaired"
+        output_dir = "results/kallisto_files/unpaired/{sample}/"
     conda:
         "../envs/rnaseq.yaml"
     shell:

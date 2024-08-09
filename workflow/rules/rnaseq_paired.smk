@@ -83,7 +83,11 @@ rule rna_filtering:
 
 
 
-## Trimming reads
+## rna_trimming: trim and crop data
+## trim and crop Illumina (FASTQ) data and remove adapters.
+## .fq files will be located in a directory named results/sortmerna_files/rRNAf
+## output will be directed to a directory named results/trimmomatic_files/{sample}, 
+
 
 rule rna_trimming:
     input:
@@ -115,9 +119,6 @@ rule rna_trimming:
 # ended reads a score of 10, (about 17 bases). Scan the read with a 5-base wide sliding window, cutting when 
 # the average quality per base drops below 20. Drop reads which are less than 50 bases long after these steps
 
-# Extracted from http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf
-
-
 # Paired-end mode requires 2 input files (for forward and reverse reads) and 4 output files (for
 # forward paired, forward unpaired, reverse paired and reverse unpaired reads).
 
@@ -134,7 +135,8 @@ rule rna_trimming:
 
 
 
-## Aligning with kallisto
+## kallisto_index: builds an index
+## from a FASTA formatted file of target sequences. Compute intensive rule
 
 rule kallisto_index:
     input:
@@ -156,6 +158,10 @@ rule kallisto_index:
 # Define patterns to match specific files
 for_paired = glob_wildcards("results/trimmomatic_files/{sample}_fwd_p.fq.gz").sample
 rev_paired = glob_wildcards("results/trimmomatic_files/{sample}_rev_p.fq.gz").sample
+
+
+## kallisto_quant: runs the quantification algorithm
+## outputs three files: abundance.h5, read by sleuth; abundance.tsv wich is plaintext and run_info.json, a log file
 
 rule kallisto_quant:
     input:

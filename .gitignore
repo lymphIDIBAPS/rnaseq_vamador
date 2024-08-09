@@ -6,3 +6,4 @@ readb/
 results/
 *.idx
 kvdb/
+workflow/report
