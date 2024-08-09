@@ -21,20 +21,20 @@ rule all:
         # 
         # The lines below will perform fastqc in the raw RNA data
         #
-        # expand("FASTQC/{sample}/{sample}_fastqc.html", sample=fastq_samples),
-        # expand("FASTQC/single_end/{sample}_fastqc.html", sample=single_end_fastq_samples),
+        # expand("FASTQC/{sample}/{sample}_1_1_fastqc.html", sample = paired_samples),
+        # expand("FASTQC/single_end/{sample}/{sample}_fastqc.html", sample = single_end_samples),
         #
         # The lines below will perform fastqc in the filtered and trimmed RNA
         #
-        # expand("FASTQC/sortmerna/filtered/{sample}_fwd/{sample}_fastqc.html", sample = fastq_samples),
-        # expand("FASTQC/sortmerna/filtered/{sample}_rev/{sample}_fastqc.html", sample = fastq_samples),
-        # expand("FASTQC/trimmomatic/{sample}/{sample}_fwd_p_fastqc.html", sample = fastq_samples),
-        # expand("FASTQC/sortmerna/unpaired/filtered/{sample}/{sample}_fastqc.html", sample = fastq_samples),
-        # expand("FASTQC/trimmomatic/unpaired/{sample}/{sample}_fwd_fastqc.html", sample = fastq_samples),
+        expand("FASTQC/sortmerna/filtered/{sample}_fwd/{sample}_fastqc.html", sample = paired_samples),
+        expand("FASTQC/sortmerna/filtered/{sample}_rev/{sample}_fastqc.html", sample = fastq_samples),
+        expand("FASTQC/trimmomatic/{sample}/{sample}_fwd_p_fastqc.html", sample = fastq_samples),
+        expand("FASTQC/sortmerna/unpaired/filtered/{sample}/{sample}_fastqc.html", sample = fastq_samples),
+        expand("FASTQC/trimmomatic/unpaired/{sample}/{sample}_fwd_fastqc.html", sample = fastq_samples),
         # 
         # The lines below run the full quantification pipeline, for unpaired and paired samples
         #
         # expand("results/kallisto_files/unpaired/{sample}/abundance.h5", sample = sample_name),
-        expand("results/kallisto_files/{sample}/abundance.h5", sample = L1_F)
+        # expand("results/kallisto_files/{sample}/abundance.h5", sample = L1_F)
     shell:
         'echo "I just run subrules!"'
