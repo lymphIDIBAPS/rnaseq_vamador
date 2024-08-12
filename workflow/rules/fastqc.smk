@@ -76,9 +76,9 @@ rule filtered_fwd_rna_to_fastqc:
         fastqc -o {params.outdir} -t {params.threads} {input}
         """
 
-## filtered_rev_rna_to_fastqc: quality control checks on filtered forward sequence data
-## .fastq files must be located in a directory named /sortmerna_files and end with *_rRNA_filtered.fastq
-## output will be directed to a directory named /FASTQC/sortmerna/filtered/{sample}
+## filtered_rev_rna_to_fastqc: quality control checks on filtered reverse sequence data
+## .fastq files must be located in a directory named /sortmerna_files/rRNAf and end with _rev.fq
+## output will be directed to a directory named /FASTQC/sortmerna/filtered/{sample}_rev/{sample}_rev_fastqc
 
 
 rule filtered_rev_rna_to_fastqc:
@@ -100,8 +100,8 @@ rule filtered_rev_rna_to_fastqc:
 
 
 ## filtered_unpaired_rna_to_fastqc: quality control checks on unpaired sorted sequence data
-## .fastq files must be located in a directory named /sortmerna_files and end with *_rRNA_filtered.fastq
-## output will be directed to a directory named /FASTQC/sortmerna/filtered/{sample}
+## .fastq files must be located in a directory named /unpaired/rRNAf/ and end with .fq
+## output will be directed to a directory named /unpaired/filtered/{sample}/{sample}_fastqc
 
 
 rule filtered_unpaired_rna_to_fastqc:
@@ -122,8 +122,8 @@ rule filtered_unpaired_rna_to_fastqc:
         """
 
 
-## trimmomatic_paired_rna_to_fastqc: quality control checks on trimmed sequence data
-## .fq.gz files must be located in a directory named Trimmomatic_files and end with *.fq.gz
+## trimmomatic_paired_rna_to_fastqc: quality control checks on trimmed paired sequence data
+## .fq.gz files must be located in a directory named trimmomatic_files and end with *.fq.gz
 ## output will be directed to a directory named /FASTQC/trimmomatic/{sample}
 
 
@@ -148,9 +148,9 @@ rule trimmomatic_paired_rna_to_fastqc:
         """
 
 
-## trimmomatic_unpaired_rna_to_fastqc: quality control checks on trimmed sequence data
-## .fq.gz files must be located in a directory named Trimmomatic_files and end with *.fq.gz
-## output will be directed to a directory named /FASTQC/trimmomatic/{sample}
+## trimmomatic_unpaired_rna_to_fastqc: quality control checks on trimmed unpaired sequence data
+## .fq.gz files must be located in a directory named trimmomatic_files/unpaired and end with *.fq.gz
+## output will be directed to a directory named /trimmomatic/unpaired/{sample}/{sample}_fwd
 
 
 rule trimmomatic_unpaired_rna_to_fastqc:

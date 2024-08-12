@@ -75,9 +75,7 @@ rule rna_filtering:
 
 
 
-
-
-## rna_trimming: trim and crop data
+## rna_trimming: trim and crop filtered data
 ## trim and crop Illumina (FASTQ) data and remove adapters.
 ## .fq files will be located in a directory named results/sortmerna_files/rRNAf
 ## output will be directed to a directory named results/trimmomatic_files/{sample}, 
@@ -116,14 +114,14 @@ rule rna_trimming:
 # Paired-end mode requires 2 input files (for forward and reverse reads) and 4 output files (for
 # forward paired, forward unpaired, reverse paired and reverse unpaired reads).
 
-# 2 input files: /slgpfs/projects/cli84/FASTQ/sortmerna_files/$rRNAf_F /slgpfs/projects/cli84/FASTQ/sortmerna_files/$rRNAf_R
+# 2 input files: FASTQ/sortmerna_files/$rRNAf_F FASTQ/sortmerna_files/$rRNAf_R
 
 # 4 output files: 
 
-# /slgpfs/projects/cli84/FASTQ/Trimmomatic_files/$trimmed_F
-# /slgpfs/projects/cli84/FASTQ/Trimmomatic_files/$trimmed_F2
-# /slgpfs/projects/cli84/FASTQ/Trimmomatic_files/$trimmed_R
-# /slgpfs/projects/cli84/FASTQ/Trimmomatic_files/$trimmed_R2
+# FASTQ/Trimmomatic_files/$trimmed_F
+# FASTQ/Trimmomatic_files/$trimmed_F2
+# FASTQ/Trimmomatic_files/$trimmed_R
+# FASTQ/Trimmomatic_files/$trimmed_R2
 
 # (for forward paired, forward unpaired, reverse paired and reverse unpaired reads).
 
@@ -150,15 +148,13 @@ rule kallisto_index:
 
 
 ## kallisto_quant: runs the quantification algorithm
-## outputs three files: abundance.h5, read by sleuth; abundance.tsv wich is plaintext and run_info.json, a log file
+## outputs three files: abundance.h5 (read by sleuth), abundance.tsv (plaintext) and run_info.json (log file)
 
 rule kallisto_quant:
     input:
         index_path = "resources/kallisto/Homo_sapiens.GRCh38.cdna.all.release-100.idx",
         rev_paired = "results/trimmomatic_files/{sample}_rev_p.fq.gz",
         for_paired = "results/trimmomatic_files/{sample}_fwd_p.fq.gz",
-    # wildcard_constraints:
-    #    sample = "^(?!unpaired/).*"  # Exclude any sample from the "unpaired/" directory
     output:
         abundance = "results/kallisto_files/{sample}/abundance.h5",
         abundance_tsv = "results/kallisto_files/{sample}/abundance.tsv",

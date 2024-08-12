@@ -1,4 +1,4 @@
-## Snakefile - RNAseq not paired
+## Snakefile - RNAseq not Paired
 ##
 # configfile: "config/config.yaml"
 
@@ -35,9 +35,9 @@ rule rna_filtering_not_paired:
         "v3.14.0/bio/sortmerna"
 
 
-## rna_trimming_not_paired: trim and crop data
+## rna_trimming_not_paired: trim and crop filtered data
 ## trim and crop Illumina (FASTQ) data and remove adapters.
-## .fq files will be located in a directory named results/sortmerna_files/unpaired/rRNAf
+## input files will be located in a directory named results/sortmerna_files/unpaired/rRNAf
 ## output will be directed to a directory named results/trimmomatic_files/unpaired/{sample}
 
 rule rna_trimming_not_paired:
@@ -65,12 +65,12 @@ rule rna_trimming_not_paired:
 # if in the case of paired end reads a score of 30 is reached (about 50 bases), or in the case of single 
 # ended reads a score of 10, (about 17 bases). Scan the read with a 5-base wide sliding window, cutting when 
 # the average quality per base drops below 20. Drop reads which are less than 50 bases long after these steps
-
 # Single-end mode requires 1 input files and outputs 1 file.
 
 
+
 ## kallisto_quant: runs the quantification algorithm
-## outputs three files: abundance.h5, read by sleuth; abundance.tsv wich is plaintext and run_info.json, a log file
+## outputs three files: abundance.h5 (read by sleuth), abundance.tsv (plaintext) and run_info.json (log file)
 ## The index is constructed with the rule kallisto_index in the rnaseq_paired.smk file
 
 

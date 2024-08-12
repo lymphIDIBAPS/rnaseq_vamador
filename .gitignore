@@ -1,9 +1,21 @@
+# Directory of snakemake utils
 .snakemake/
+
+# PDFs representing the DAG and Rulegraph of the pipeline
 *.pdf
+
+# Directory for FASTQC results
 FASTQC/
-idx/
-readb/
+
+# Results directory
 results/
+
+# Directory created by sortmerna
+readb/
+
+# Index used by sortmerna package
+idx/
 *.idx
-kvdb/
+
+# Reports from sortmerna package
 workflow/report
