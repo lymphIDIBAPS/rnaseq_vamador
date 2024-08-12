@@ -8,17 +8,6 @@ include: "workflow/rules/rnaseq_not_paired.smk"
 
 rule all:
     input:
-        # expand("results/sortmerna_files/unpaired/rRNA/{sample}.log", sample = single_end_sample_name),
-        # expand("results/trimmomatic_files/unpaired/{sample}_fwd.fq.gz", sample = single_end_sample_name),
-        # 
-        # Below I have the paired results
-        # 
-        # expand("resources/rna_paired/merged/{sample}_mergedF.fastq", sample=paired_end_sample_name),
-        # expand("results/sortmerna_files/rRNA/{sample}_rev.fq", sample=paired_end_sample_name),
-        # expand("results/trimmomatic_files/{sample}_fwd_p.fq.gz", sample=paired_end_sample_name),
-        # ("resources/kallisto/Homo_sapiens.GRCh38.cdna.all.release-100.idx"),
-        # 
-        # 
         # The lines below will perform fastqc in the raw RNA data
         #
         expand("FASTQC/{sample}/{sample}_1_1_fastqc.html", sample = paired_samples),

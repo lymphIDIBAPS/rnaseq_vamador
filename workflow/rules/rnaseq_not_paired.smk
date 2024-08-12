@@ -1,5 +1,7 @@
-## Snakefile - RNAseq Single End
+## Snakefile - RNAseq not paired
 ##
+# configfile: "config/config.yaml"
+
 
 # Define the directory containing the FASTQ files
 single_end_dir = "FASTQ/single_end"
