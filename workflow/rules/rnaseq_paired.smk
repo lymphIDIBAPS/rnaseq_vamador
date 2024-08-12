@@ -7,11 +7,8 @@
 fastq_dir = "FASTQ/rna_paired/unmerged"
 
 # Define patterns to match specific files
-L1_F = glob_wildcards(fastq_dir + "/{sample}_1_1.fastq").sample
-L2_F = glob_wildcards(fastq_dir + "/{sample}_2_1.fastq").sample
+paired_end_sample_name = glob_wildcards(fastq_dir + "/{sample}_1_1.fastq").sample
 
-L1_R = glob_wildcards(fastq_dir + "/{sample}_1_2.fastq").sample
-L2_R = glob_wildcards(fastq_dir + "/{sample}_2_2.fastq").sample
 
 # In the original scipt, we have the following code snippet, that i dont
 # know why is present. Will research.

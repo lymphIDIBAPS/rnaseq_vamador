@@ -24,8 +24,8 @@ rule fastq_to_fastqc:
         "FASTQ/rna_paired/unmerged/{sample}_2_1.fastq",
         "FASTQ/rna_paired/unmerged/{sample}_2_2.fastq",
     output:
-        "FASTQC/{sample}/{sample}_fastqc.html",
-        "FASTQC/{sample}/{sample}_fastqc.zip",
+        "FASTQC/{sample}/{sample}_1_1_fastqc.html",
+        "FASTQC/{sample}/{sample}_1_1_fastqc.zip",
     conda:
         "../envs/fastqc.yaml"
     params:
@@ -45,8 +45,8 @@ rule single_end_fastq_to_fastqc:
     input:
         "FASTQ/single_end/{sample}.fastq",
     output:
-        "FASTQC/single_end/{sample}_fastqc.html",
-        "FASTQC/single_end/{sample}_fastqc.zip",
+        "FASTQC/single_end/{sample}/{sample}_fastqc.html",
+        "FASTQC/single_end/{sample}/{sample}_fastqc.zip",
     conda:
         "../envs/fastqc.yaml"
     params:
@@ -68,8 +68,8 @@ rule filtered_fwd_rna_to_fastqc:
     input:
         "results/sortmerna_files/rRNAf/{sample}_fwd.fq"
     output:
-        "FASTQC/sortmerna/filtered/{sample}_fwd/{sample}_fastqc.html",
-        "FASTQC/sortmerna/filtered/{sample}_fwd/{sample}_fastqc.zip",
+        "FASTQC/sortmerna/filtered/{sample}_fwd/{sample}_fwd_fastqc.html",
+        "FASTQC/sortmerna/filtered/{sample}_fwd/{sample}_fwd_fastqc.zip",
     params:
         outdir=lambda wildcards: "FASTQC/sortmerna/filtered/{}_fwd".format(wildcards.sample),
         threads=24,
@@ -90,8 +90,8 @@ rule filtered_rev_rna_to_fastqc:
     input:
         "results/sortmerna_files/rRNAf/{sample}_rev.fq"
     output:
-        "FASTQC/sortmerna/filtered/{sample}_rev/{sample}_fastqc.html",
-        "FASTQC/sortmerna/filtered/{sample}_rev/{sample}_fastqc.zip",
+        "FASTQC/sortmerna/filtered/{sample}_rev/{sample}_rev_fastqc.html",
+        "FASTQC/sortmerna/filtered/{sample}_rev/{sample}_rev_fastqc.zip",
     params:
         outdir=lambda wildcards: "FASTQC/sortmerna/filtered/{}_rev".format(wildcards.sample),
         threads=24,
@@ -139,8 +139,8 @@ rule trimmomatic_paired_rna_to_fastqc:
         "results/trimmomatic_files/{sample}_rev_p.fq.gz",
         "results/trimmomatic_files/{sample}_rev_up.fq.gz"
     output:
-        "FASTQC/trimmomatic/{sample}/{sample}_fastqc.html",
-        "FASTQC/trimmomatic/{sample}/{sample}_fastqc.zip"
+        "FASTQC/trimmomatic/{sample}/{sample}_fwd_p_fastqc.html",
+        "FASTQC/trimmomatic/{sample}/{sample}_fwd_p_fastqc.zip"
     params:
         outdir=lambda wildcards: "FASTQC/trimmomatic/{}".format(wildcards.sample),
         threads=24,

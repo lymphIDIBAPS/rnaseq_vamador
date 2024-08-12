@@ -5,7 +5,7 @@
 single_end_dir = "FASTQ/single_end"
 
 # Define patterns to match specific files
-sample_name = glob_wildcards(single_end_dir + "/{sample}.fastq").sample
+single_end_sample_name = glob_wildcards(single_end_dir + "/{sample}.fastq").sample
 
 
 ## rna_filtering: filter RNA from non paired reads
@@ -17,7 +17,7 @@ sample_name = glob_wildcards(single_end_dir + "/{sample}.fastq").sample
 rule rna_filtering_not_paired:
     input:
         ref = ["/home/oscar/rnaseq/resources/rRNA_databases_v4/smr_v4.3_default_db.fasta"],
-        reads = expand("FASTQ/single_end/{sample}.fastq", sample = sample_name)
+        reads = "FASTQ/single_end/{sample}.fastq",
     output:
         aligned = "results/sortmerna_files/unpaired/rRNA/{sample}.fq",
         other = "results/sortmerna_files/unpaired/rRNAf/{sample}.fq",
