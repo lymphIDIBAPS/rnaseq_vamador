@@ -57,6 +57,10 @@ rule rna_filtering:
         threads = 24
     conda:
         "../envs/rnaseq.yaml"
+    log:
+        "results/sortmerna_files/rRNA/{sample}.log"
+    envmodules:
+        "/apps/modules/modulefiles/applications/sortmerna/4.3.6.lua"
     shell:
         """
         mkdir -p results/sortmerna_files/rRNA
@@ -141,6 +145,13 @@ rule kallisto_index:
         threads = 24
     conda:
         "../envs/rnaseq.yaml"
+    envmodules:
+        "/apps/modules/modulefiles/compilers/intel/2018.3"
+        "/apps/modules/modulefiles/environment/impi/2018.3"
+        "/apps/modules/modulefiles/libraries/zlib/1.2.11"
+        "/apps/modules/modulefiles/libraries/hdf5/1.14.1.lua"
+        "/apps/modules/modulefiles/libraries/szip/2.1.1.lua"
+        "/apps/modules/modulefiles/applications/kallisto/0.46.1"
     shell:
         """
         kallisto index -i {output.index_out_path} --threads={params.threads} {input.index_path} 
@@ -160,11 +171,18 @@ rule kallisto_quant:
     output:
         abundance = "results/kallisto_files/{sample}/abundance.h5",
         abundance_tsv = "results/kallisto_files/{sample}/abundance.tsv",
-    conda:
-        "../envs/rnaseq.yaml"
     params:
         threads = 24,
         output_dir = "results/kallisto_files/{sample}/"
+    conda:
+        "../envs/rnaseq.yaml"
+    envmodules:
+        "/apps/modules/modulefiles/compilers/intel/2018.3"
+        "/apps/modules/modulefiles/environment/impi/2018.3"
+        "/apps/modules/modulefiles/libraries/zlib/1.2.11"
+        "/apps/modules/modulefiles/libraries/hdf5/1.14.1.lua"
+        "/apps/modules/modulefiles/libraries/szip/2.1.1.lua"
+        "/apps/modules/modulefiles/applications/kallisto/0.46.1"
     shell:
         """
         mkdir -p {params.output_dir}

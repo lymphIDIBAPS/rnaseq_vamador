@@ -25,6 +25,9 @@ rule paired_end_fastq_to_fastqc:
         "../envs/fastqc.yaml"
     log:
         "logs/paired_end_fastq_to_fastqc/{sample}.log"
+    envmodules:
+        "/apps/modules/modulefiles/tools/java/12.0.2.lua"
+        "/apps/modules/modulefiles/tools/fastqc/0.11.9"
     params:
         outdir = lambda wildcards: "FASTQC/{}".format(wildcards.sample),
         logdir = "logs/paired_end_fastq_to_fastqc/",
@@ -49,6 +52,9 @@ rule single_end_fastq_to_fastqc:
         "../envs/fastqc.yaml"
     log:
         "logs/single_end_fastq_to_fastqc/{sample}.log"
+    envmodules:
+        "/apps/modules/modulefiles/tools/java/12.0.2.lua"
+        "/apps/modules/modulefiles/tools/fastqc/0.11.9"
     params:
         outdir = lambda wildcards: "FASTQC/single_end/{}".format(wildcards.sample),
         logdir = "logs/single_end_fastq_to_fastqc/",
@@ -75,6 +81,9 @@ rule filtered_fwd_rna_to_fastqc:
         "../envs/fastqc.yaml"
     log:
         "logs/filtered_fwd_rna_to_fastqc/{sample}.log"
+    envmodules:
+        "/apps/modules/modulefiles/tools/java/12.0.2.lua"
+        "/apps/modules/modulefiles/tools/fastqc/0.11.9"
     params:
         outdir=lambda wildcards: "FASTQC/sortmerna/filtered/{}_fwd".format(wildcards.sample),
         logdir = "logs/filtered_fwd_rna_to_fastqc/",
@@ -100,6 +109,9 @@ rule filtered_rev_rna_to_fastqc:
         "../envs/fastqc.yaml"
     log:
         "logs/filtered_rev_rna_to_fastqc/{sample}.log"
+    envmodules:
+        "/apps/modules/modulefiles/tools/java/12.0.2.lua"
+        "/apps/modules/modulefiles/tools/fastqc/0.11.9"
     params:
         outdir=lambda wildcards: "FASTQC/sortmerna/filtered/{}_rev".format(wildcards.sample),
         logdir = "logs/filtered_rev_rna_to_fastqc/",
@@ -126,6 +138,9 @@ rule filtered_unpaired_rna_to_fastqc:
         "../envs/fastqc.yaml"
     log:
         "logs/filtered_unpaired_rna_to_fastqc/{sample}.log"
+    envmodules:
+        "/apps/modules/modulefiles/tools/java/12.0.2.lua"
+        "/apps/modules/modulefiles/tools/fastqc/0.11.9"
     params:
         outdir=lambda wildcards: "FASTQC/sortmerna/unpaired/filtered/{}".format(wildcards.sample),
         logdir = "logs/filtered_unpaired_rna_to_fastqc/",
@@ -155,6 +170,9 @@ rule trimmomatic_paired_rna_to_fastqc:
         "../envs/fastqc.yaml"
     log:
         "logs/trimmomatic_paired_rna_to_fastqc/{sample}.log"
+    envmodules:
+        "/apps/modules/modulefiles/tools/java/12.0.2.lua"
+        "/apps/modules/modulefiles/tools/fastqc/0.11.9"
     params:
         outdir=lambda wildcards: "FASTQC/trimmomatic/{}".format(wildcards.sample),
         logdir = "logs/trimmomatic_paired_rna_to_fastqc/",
@@ -181,6 +199,9 @@ rule trimmomatic_unpaired_rna_to_fastqc:
         "../envs/fastqc.yaml"
     log:
         "logs/trimmomatic_unpaired_rna_to_fastqc/{sample}.log"
+    envmodules:
+        "/apps/modules/modulefiles/tools/java/12.0.2.lua"
+        "/apps/modules/modulefiles/tools/fastqc/0.11.9"
     params:
         outdir=lambda wildcards: "FASTQC/trimmomatic/unpaired/{}".format(wildcards.sample),
         logdir = "logs/trimmomatic_unpaired_rna_to_fastqc/",
