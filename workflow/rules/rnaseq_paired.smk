@@ -7,7 +7,7 @@
 fastq_dir = "FASTQ/rna_paired/unmerged"
 
 # Define patterns to match specific files
-paired_end_sample_name = glob_wildcards(fastq_dir + "/{sample}_1_1.fastq").sample
+paired_end_sample_name = glob_wildcards(f"{fastq_dir}/{{sample}}_1_1.fastq").sample
 
 
 # In the original scipt, we have the following code snippet, that i dont
@@ -94,10 +94,12 @@ rule rna_trimming:
         threads = 24
     conda:
         "../envs/rnaseq.yaml"
+    log:
+        "logs/rna_trimming/{sample}.log"
     shell:
         """
-        mkdir -p results/trimmomatic_files
-        trimmomatic PE -threads {params.threads} -phred33 {input.forward} {input.rev} \
+        mkdir -p results/trimmomatic_files logs/rna_trimming
+        trimmomatic PE -threads {params.threads} -phred33 -trimlog {log} {input.forward} {input.rev} \
         {output.forward_paired} {output.forward_unpaired} {output.rev_paired} {output.rev_unpaired} \
         ILLUMINACLIP:TruSeq3-PE:2:30:10 SLIDINGWINDOW:5:20 MINLEN:50
         """

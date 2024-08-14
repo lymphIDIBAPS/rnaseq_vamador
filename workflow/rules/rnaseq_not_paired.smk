@@ -7,7 +7,7 @@
 single_end_dir = "FASTQ/single_end"
 
 # Define patterns to match specific files
-single_end_sample_name = glob_wildcards(single_end_dir + "/{sample}.fastq").sample
+single_end_sample_name = glob_wildcards(f"{single_end_dir}/{{sample}}.fastq").sample
 
 
 ## rna_filtering: filter RNA from non paired reads
@@ -18,7 +18,7 @@ single_end_sample_name = glob_wildcards(single_end_dir + "/{sample}.fastq").samp
 
 rule rna_filtering_not_paired:
     input:
-        ref = ["/home/oscar/rnaseq/resources/rRNA_databases_v4/smr_v4.3_default_db.fasta"],
+        ref = ["resources/rRNA_databases_v4/smr_v4.3_default_db.fasta"],
         reads = "FASTQ/single_end/{sample}.fastq",
     output:
         aligned = "results/sortmerna_files/unpaired/rRNA/{sample}.fq",
@@ -49,10 +49,12 @@ rule rna_trimming_not_paired:
         threads = 24
     conda:
         "../envs/rnaseq.yaml"
+    log:
+        "logs/rna_trimming_not_paired/{sample}.log"
     shell:
         """
-        mkdir -p results/trimmomatic_files/unpaired
-        trimmomatic SE -threads {params.threads} -phred33 {input.read} \
+        mkdir -p results/trimmomatic_files/unpaired logs/rna_trimming_not_paired
+        trimmomatic SE -threads {params.threads} -phred33 -trimlog {log} {input.read} \
         {output.file} \
         ILLUMINACLIP:TruSeq3-SE:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:5:20 MINLEN:50
         """

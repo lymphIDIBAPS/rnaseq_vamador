@@ -23,13 +23,16 @@ rule paired_end_fastq_to_fastqc:
         "FASTQC/{sample}/{sample}_1_1_fastqc.zip",
     conda:
         "../envs/fastqc.yaml"
+    log:
+        "logs/paired_end_fastq_to_fastqc/{sample}.log"
     params:
         outdir = lambda wildcards: "FASTQC/{}".format(wildcards.sample),
+        logdir = "logs/paired_end_fastq_to_fastqc/",
         threads=24,
     shell:
         """
-        mkdir -p {params.outdir}
-        fastqc -o {params.outdir} -t {params.threads} {input}
+        mkdir -p {params.outdir} {params.logdir}
+        fastqc -o {params.outdir} -t {params.threads} {input} 2> {log}
         """
 
 ## single_end_fastq_to_fastqc: quality control checks on single end sequence data
@@ -44,13 +47,16 @@ rule single_end_fastq_to_fastqc:
         "FASTQC/single_end/{sample}/{sample}_fastqc.zip",
     conda:
         "../envs/fastqc.yaml"
+    log:
+        "logs/single_end_fastq_to_fastqc/{sample}.log"
     params:
         outdir = lambda wildcards: "FASTQC/single_end/{}".format(wildcards.sample),
+        logdir = "logs/single_end_fastq_to_fastqc/",
         threads=24,
     shell:
         """
-        mkdir -p {params.outdir}
-        fastqc -o {params.outdir} -t {params.threads} {input}
+        mkdir -p {params.outdir} {params.logdir}
+        fastqc -o {params.outdir} -t {params.threads} {input} 2> {log}
         """
 
 
@@ -65,15 +71,18 @@ rule filtered_fwd_rna_to_fastqc:
     output:
         "FASTQC/sortmerna/filtered/{sample}_fwd/{sample}_fwd_fastqc.html",
         "FASTQC/sortmerna/filtered/{sample}_fwd/{sample}_fwd_fastqc.zip",
-    params:
-        outdir=lambda wildcards: "FASTQC/sortmerna/filtered/{}_fwd".format(wildcards.sample),
-        threads=24,
     conda:
         "../envs/fastqc.yaml"
+    log:
+        "logs/filtered_fwd_rna_to_fastqc/{sample}.log"
+    params:
+        outdir=lambda wildcards: "FASTQC/sortmerna/filtered/{}_fwd".format(wildcards.sample),
+        logdir = "logs/filtered_fwd_rna_to_fastqc/",
+        threads=24,
     shell:
         """
-        mkdir -p {params.outdir}
-        fastqc -o {params.outdir} -t {params.threads} {input}
+        mkdir -p {params.outdir} {params.logdir}
+        fastqc -o {params.outdir} -t {params.threads} {input} 2> {log}
         """
 
 ## filtered_rev_rna_to_fastqc: quality control checks on filtered reverse sequence data
@@ -87,15 +96,18 @@ rule filtered_rev_rna_to_fastqc:
     output:
         "FASTQC/sortmerna/filtered/{sample}_rev/{sample}_rev_fastqc.html",
         "FASTQC/sortmerna/filtered/{sample}_rev/{sample}_rev_fastqc.zip",
-    params:
-        outdir=lambda wildcards: "FASTQC/sortmerna/filtered/{}_rev".format(wildcards.sample),
-        threads=24,
     conda:
         "../envs/fastqc.yaml"
+    log:
+        "logs/filtered_rev_rna_to_fastqc/{sample}.log"
+    params:
+        outdir=lambda wildcards: "FASTQC/sortmerna/filtered/{}_rev".format(wildcards.sample),
+        logdir = "logs/filtered_rev_rna_to_fastqc/",
+        threads=24,
     shell:
         """
-        mkdir -p {params.outdir}
-        fastqc -o {params.outdir} -t {params.threads} {input}
+        mkdir -p {params.outdir} {params.logdir}
+        fastqc -o {params.outdir} -t {params.threads} {input} 2> {log}
         """
 
 
@@ -110,15 +122,18 @@ rule filtered_unpaired_rna_to_fastqc:
     output:
         "FASTQC/sortmerna/unpaired/filtered/{sample}/{sample}_fastqc.html",
         "FASTQC/sortmerna/unpaired/filtered/{sample}/{sample}_fastqc.zip",
-    params:
-        outdir=lambda wildcards: "FASTQC/sortmerna/unpaired/filtered/{}".format(wildcards.sample),
-        threads=24,
     conda:
         "../envs/fastqc.yaml"
+    log:
+        "logs/filtered_unpaired_rna_to_fastqc/{sample}.log"
+    params:
+        outdir=lambda wildcards: "FASTQC/sortmerna/unpaired/filtered/{}".format(wildcards.sample),
+        logdir = "logs/filtered_unpaired_rna_to_fastqc/",
+        threads=24,
     shell:
         """
-        mkdir -p {params.outdir}
-        fastqc -o {params.outdir} -t {params.threads} {input}
+        mkdir -p {params.outdir} {params.logdir}
+        fastqc -o {params.outdir} -t {params.threads} {input} 2> {log}
         """
 
 
@@ -135,16 +150,19 @@ rule trimmomatic_paired_rna_to_fastqc:
         "results/trimmomatic_files/{sample}_rev_up.fq.gz"
     output:
         "FASTQC/trimmomatic/{sample}/{sample}_fwd_p_fastqc.html",
-        "FASTQC/trimmomatic/{sample}/{sample}_fwd_p_fastqc.zip"
-    params:
-        outdir=lambda wildcards: "FASTQC/trimmomatic/{}".format(wildcards.sample),
-        threads=24,
+        "FASTQC/trimmomatic/{sample}/{sample}_fwd_p_fastqc.zip",
     conda:
         "../envs/fastqc.yaml"
+    log:
+        "logs/trimmomatic_paired_rna_to_fastqc/{sample}.log"
+    params:
+        outdir=lambda wildcards: "FASTQC/trimmomatic/{}".format(wildcards.sample),
+        logdir = "logs/trimmomatic_paired_rna_to_fastqc/",
+        threads=24,
     shell:
         """
-        mkdir -p {params.outdir}
-        fastqc -o {params.outdir} -t {params.threads} {input}
+        mkdir -p {params.outdir} {params.logdir}
+        fastqc -o {params.outdir} -t {params.threads} {input} 2> {log}
         """
 
 
@@ -159,13 +177,16 @@ rule trimmomatic_unpaired_rna_to_fastqc:
     output:
         "FASTQC/trimmomatic/unpaired/{sample}/{sample}_fwd_fastqc.html",
         "FASTQC/trimmomatic/unpaired/{sample}/{sample}_fwd_fastqc.zip"
-    params:
-        outdir=lambda wildcards: "FASTQC/trimmomatic/unpaired/{}".format(wildcards.sample),
-        threads=24,
     conda:
         "../envs/fastqc.yaml"
+    log:
+        "logs/trimmomatic_unpaired_rna_to_fastqc/{sample}.log"
+    params:
+        outdir=lambda wildcards: "FASTQC/trimmomatic/unpaired/{}".format(wildcards.sample),
+        logdir = "logs/trimmomatic_unpaired_rna_to_fastqc/",
+        threads=24,
     shell:
         """
-        mkdir -p {params.outdir}
-        fastqc -o {params.outdir} -t {params.threads} {input}
+        mkdir -p {params.outdir} {params.logdir}
+        fastqc -o {params.outdir} -t {params.threads} {input} 2> {log}
         """
