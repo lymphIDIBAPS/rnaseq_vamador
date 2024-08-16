@@ -19,3 +19,6 @@ idx/
 
 # Reports from sortmerna package
 workflow/report
+
+# Logs directory
+logs/

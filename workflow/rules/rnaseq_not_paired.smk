@@ -2,6 +2,7 @@
 ##
 # configfile: "config/config.yaml"
 
+import os
 
 # Define the directory containing the FASTQ files
 single_end_dir = "FASTQ/single_end"
@@ -31,6 +32,8 @@ rule rna_filtering_not_paired:
         mem_mb=4096,  # amount of memory for building the index
     log:
         "workflow/report/{sample}_se.log",
+    envmodules:
+        "/apps/modules/modulefiles/applications/sortmerna/4.3.6.lua"
     wrapper:
         "v3.14.0/bio/sortmerna"
 
@@ -84,9 +87,17 @@ rule kallisto_quant_not_paired:
         abundance = "results/kallisto_files/unpaired/{sample}/abundance.h5"
     params:
         threads = 24,
-        output_dir = "results/kallisto_files/unpaired/{sample}/"
+        output_dir = lambda wildcards, output: os.path.dirname(output.abundance),
+        # "results/kallisto_files/unpaired/{sample}/"
     conda:
         "../envs/rnaseq.yaml"
+    envmodules:
+        "/apps/modules/modulefiles/compilers/intel/2018.3"
+        "/apps/modules/modulefiles/environment/impi/2018.3"
+        "/apps/modules/modulefiles/libraries/zlib/1.2.11"
+        "/apps/modules/modulefiles/libraries/hdf5/1.14.1.lua"
+        "/apps/modules/modulefiles/libraries/szip/2.1.1.lua"
+        "/apps/modules/modulefiles/applications/kallisto/0.46.1"
     shell:
         """
         mkdir -p {params.output_dir}

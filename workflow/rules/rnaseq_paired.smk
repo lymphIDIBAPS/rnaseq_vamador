@@ -2,6 +2,7 @@
 ##
 # configfile: "config/config.yaml"
 
+import os
 
 # Define the directory containing the FASTQ files
 fastq_dir = "FASTQ/rna_paired/unmerged"
@@ -52,9 +53,11 @@ rule rna_filtering:
         forward = "results/sortmerna_files/rRNAf/{sample}_fwd.fq",
         other = "results/sortmerna_files/rRNAf/{sample}_rev.fq",
     params:
-        aligned = "results/sortmerna_files/rRNA/{sample}",
-        other = "results/sortmerna_files/rRNAf/{sample}",
-        threads = 24
+        aligned = lambda wildcards, output: os.path.join(os.path.dirname(output.aligned), wildcards.sample),
+        # "results/sortmerna_files/rRNA/{sample}"
+        other = lambda wildcards, output: os.path.join(os.path.dirname(output.other), wildcards.sample),
+        # "results/sortmerna_files/rRNAf/{sample}"
+        threads = 24,
     conda:
         "../envs/rnaseq.yaml"
     log:
@@ -170,10 +173,10 @@ rule kallisto_quant:
         for_paired = "results/trimmomatic_files/{sample}_fwd_p.fq.gz",
     output:
         abundance = "results/kallisto_files/{sample}/abundance.h5",
-        abundance_tsv = "results/kallisto_files/{sample}/abundance.tsv",
     params:
         threads = 24,
-        output_dir = "results/kallisto_files/{sample}/"
+        output_dir = lambda wildcards, output: os.path.dirname(output.abundance)
+        # "results/kallisto_files/{sample}/"
     conda:
         "../envs/rnaseq.yaml"
     envmodules:
