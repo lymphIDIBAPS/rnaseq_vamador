@@ -61,14 +61,15 @@ rule rna_filtering:
     conda:
         "../envs/rnaseq.yaml"
     log:
-        "results/sortmerna_files/rRNA/{sample}.log"
+        "logs/rna_filtering/{sample}.log"
     envmodules:
         "/apps/modules/modulefiles/applications/sortmerna/4.3.6.lua"
     shell:
         """
-        mkdir -p results/sortmerna_files/rRNA
-        mkdir -p results/sortmerna_files/rRNAf
-        sortmerna --ref resources/rRNA_databases_v4/smr_v4.3_default_db.fasta --reads {input.merged_F} --reads {input.merged_R} --aligned {params.aligned} --other {params.other} --workdir /home/oscar/rnaseq --fastx --paired_in -threads {params.threads} -out2 -v --idx-dir ./idx
+        mkdir -p results/sortmerna_files/rRNA results/sortmerna_files/rRNAf logs/sortmerna_files
+        sortmerna --ref resources/rRNA_databases_v4/smr_v4.3_default_db.fasta --reads {input.merged_F} --reads {input.merged_R} \
+        --aligned {params.aligned} --other {params.other} --workdir /home/oscar/rnaseq --fastx --paired_in -threads {params.threads} \
+        -out2 -v --idx-dir ./idx > {log}
         rm -r ./kvdb/
         """
 
@@ -98,14 +99,15 @@ rule rna_trimming:
         rev_paired = "results/trimmomatic_files/{sample}_rev_p.fq.gz",
         rev_unpaired = "results/trimmomatic_files/{sample}_rev_up.fq.gz"
     params:
-        threads = 24
+        threads = 24,
+        log_dir = "logs/rna_trimming/"
     conda:
         "../envs/rnaseq.yaml"
     log:
         "logs/rna_trimming/{sample}.log"
     shell:
         """
-        mkdir -p results/trimmomatic_files logs/rna_trimming
+        mkdir -p results/trimmomatic_files {params.log_dir}
         trimmomatic PE -threads {params.threads} -phred33 -trimlog {log} {input.forward} {input.rev} \
         {output.forward_paired} {output.forward_unpaired} {output.rev_paired} {output.rev_unpaired} \
         ILLUMINACLIP:TruSeq3-PE:2:30:10 SLIDINGWINDOW:5:20 MINLEN:50
@@ -145,9 +147,12 @@ rule kallisto_index:
     output:
         index_out_path = "resources/kallisto/Homo_sapiens.GRCh38.cdna.all.release-100.idx"
     params:
-        threads = 24
+        threads = 24,
+        log_dir = "logs/kallisto_index/"
     conda:
         "../envs/rnaseq.yaml"
+    log:
+        "logs/kallisto_index/index.log"
     envmodules:
         "/apps/modules/modulefiles/compilers/intel/2018.3"
         "/apps/modules/modulefiles/environment/impi/2018.3"
@@ -157,7 +162,8 @@ rule kallisto_index:
         "/apps/modules/modulefiles/applications/kallisto/0.46.1"
     shell:
         """
-        kallisto index -i {output.index_out_path} --threads={params.threads} {input.index_path} 
+        mkdir -p {params.log_dir}
+        kallisto index -i {output.index_out_path} --threads={params.threads} {input.index_path} > {log}
         """
 
 # kallisto index -i Homo_sapiens.GRCh38.cdna.all.release-100.idx Homo_sapiens.GRCh38.cdna.all.fa.gz
@@ -175,10 +181,13 @@ rule kallisto_quant:
         abundance = "results/kallisto_files/{sample}/abundance.h5",
     params:
         threads = 24,
-        output_dir = lambda wildcards, output: os.path.dirname(output.abundance)
+        output_dir = lambda wildcards, output: os.path.dirname(output.abundance),
         # "results/kallisto_files/{sample}/"
+        log_dir = "/logs/kallisto_quant/"
     conda:
         "../envs/rnaseq.yaml"
+    log:
+        "logs/kallisto_quant/{sample}.log"
     envmodules:
         "/apps/modules/modulefiles/compilers/intel/2018.3"
         "/apps/modules/modulefiles/environment/impi/2018.3"
@@ -188,6 +197,6 @@ rule kallisto_quant:
         "/apps/modules/modulefiles/applications/kallisto/0.46.1"
     shell:
         """
-        mkdir -p {params.output_dir}
-        kallisto quant -i {input.index_path} -o {params.output_dir} -t {params.threads} {input.for_paired} {input.rev_paired}
+        mkdir -p {params.output_dir} {params.log_dir}
+        kallisto quant -i {input.index_path} -o {params.output_dir} -t {params.threads} {input.for_paired} {input.rev_paired} > {log}
         """

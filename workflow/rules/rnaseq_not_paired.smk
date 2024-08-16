@@ -49,14 +49,15 @@ rule rna_trimming_not_paired:
     output:
         file = "results/trimmomatic_files/unpaired/{sample}_fwd.fq.gz"
     params:
-        threads = 24
+        threads = 24,
+        log_dir = "logs/rna_trimming_not_paired/"
     conda:
         "../envs/rnaseq.yaml"
     log:
         "logs/rna_trimming_not_paired/{sample}.log"
     shell:
         """
-        mkdir -p results/trimmomatic_files/unpaired logs/rna_trimming_not_paired
+        mkdir -p results/trimmomatic_files/unpaired {params.log_dir}
         trimmomatic SE -threads {params.threads} -phred33 -trimlog {log} {input.read} \
         {output.file} \
         ILLUMINACLIP:TruSeq3-SE:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:5:20 MINLEN:50
@@ -89,8 +90,11 @@ rule kallisto_quant_not_paired:
         threads = 24,
         output_dir = lambda wildcards, output: os.path.dirname(output.abundance),
         # "results/kallisto_files/unpaired/{sample}/"
+        log_dir = "/logs/kallisto_quant_not_paired/"
     conda:
         "../envs/rnaseq.yaml"
+    log:
+        "logs/kallisto_quant/{sample}.log"
     envmodules:
         "/apps/modules/modulefiles/compilers/intel/2018.3"
         "/apps/modules/modulefiles/environment/impi/2018.3"
@@ -100,6 +104,6 @@ rule kallisto_quant_not_paired:
         "/apps/modules/modulefiles/applications/kallisto/0.46.1"
     shell:
         """
-        mkdir -p {params.output_dir}
-        kallisto quant -i {input.index_path} -o {params.output_dir} --single -l 260 -s 20 -t {params.threads} {input.sample_not_paired}
+        mkdir -p {params.output_dir} {params.log_dir}
+        kallisto quant -i {input.index_path} -o {params.output_dir} --single -l 260 -s 20 -t {params.threads} {input.sample_not_paired} > {log}
         """
