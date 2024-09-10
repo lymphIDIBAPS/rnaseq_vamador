@@ -1,6 +1,6 @@
 ## Snakefile - RNAseq Paired
 ##
-# configfile: "config/config.yaml"
+configfile: "config/config.yaml"
 
 import os
 
@@ -9,11 +9,6 @@ fastq_dir = "FASTQ/rna_paired/unmerged"
 
 # Define patterns to match specific files
 paired_end_sample_name = glob_wildcards(f"{fastq_dir}/{{sample}}_1_1.fastq").sample
-
-
-# In the original scipt, we have the following code snippet, that i dont
-# know why is present. Will research.
-# dir=$(basename "${1/_1_sortmerna/}")
 
 
 ## merge_technical_replicates: merge data from L1_F and L2_F
@@ -57,7 +52,7 @@ rule rna_filtering:
         # "results/sortmerna_files/rRNA/{sample}"
         other = lambda wildcards, output: os.path.join(os.path.dirname(output.other), wildcards.sample),
         # "results/sortmerna_files/rRNAf/{sample}"
-        threads = 24,
+        threads = config["threads"],
     conda:
         "../envs/rnaseq.yaml"
     log:
@@ -76,8 +71,9 @@ rule rna_filtering:
 # IDX Dir is the index directory, which will be built the first time we run sortmeRNA
 # --idx-dir ./idx
 
-#  The correct --ref databases must be this one if we want to copy exactly the pipeline form Marta Sureda:
+#  The correct --ref databases must be this one if we want to get the most astingent pipeline:
 #  --ref resources/rRNA_databases_v4/silva-bac-16s-id90.fasta --ref resources/rRNA_databases_v4/silva-bac-23s-id98.fasta --ref resources/rRNA_databases_v4/silva-arc-16s-id95.fasta  --ref resources/rRNA_databases_v4/silva-arc-23s-id98.fasta --ref resources/rRNA_databases_v4/silva-euk-18s-id95.fasta  --ref resources/rRNA_databases_v4/silva-euk-28s-id98.fasta --ref resources/rRNA_databases_v4/rfam-5s-database-id98.fasta  --ref resources/rRNA_databases_v4/rfam-5.8s-database-id98.fasta
+
 #  However, I have found that the creator of the package recommends using only the following database:
 #  smr_v4.3_default_db.fasta , from:(https://github.com/sortmerna/sortmerna/issues/292)
 
@@ -99,7 +95,7 @@ rule rna_trimming:
         rev_paired = "results/trimmomatic_files/{sample}_rev_p.fq.gz",
         rev_unpaired = "results/trimmomatic_files/{sample}_rev_up.fq.gz"
     params:
-        threads = 24,
+        threads = config["threads"],
         log_dir = "logs/rna_trimming/"
     conda:
         "../envs/rnaseq.yaml"
@@ -147,7 +143,7 @@ rule kallisto_index:
     output:
         index_out_path = "resources/kallisto/Homo_sapiens.GRCh38.cdna.all.release-100.idx"
     params:
-        threads = 24,
+        threads = config["threads"],
         log_dir = "logs/kallisto_index/"
     conda:
         "../envs/rnaseq.yaml"
@@ -166,11 +162,9 @@ rule kallisto_index:
         kallisto index -i {output.index_out_path} --threads={params.threads} {input.index_path} > {log}
         """
 
-# kallisto index -i Homo_sapiens.GRCh38.cdna.all.release-100.idx Homo_sapiens.GRCh38.cdna.all.fa.gz
-
 
 ## kallisto_quant: runs the quantification algorithm
-## outputs three files: abundance.h5 (read by sleuth), abundance.tsv (plaintext) and run_info.json (log file)
+## outputs three files: abundance.h5, abundance.tsv (plaintext) and run_info.json (log file)
 
 rule kallisto_quant:
     input:
@@ -180,7 +174,7 @@ rule kallisto_quant:
     output:
         abundance = "results/kallisto_files/{sample}/abundance.h5",
     params:
-        threads = 24,
+        threads = config["threads"],
         output_dir = lambda wildcards, output: os.path.dirname(output.abundance),
         # "results/kallisto_files/{sample}/"
         log_dir = "/logs/kallisto_quant/"

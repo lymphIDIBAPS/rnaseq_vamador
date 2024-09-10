@@ -1,6 +1,6 @@
 ## Snakefile - RNAseq not Paired
 ##
-# configfile: "config/config.yaml"
+configfile: "config/config.yaml"
 
 import os
 
@@ -27,7 +27,7 @@ rule rna_filtering_not_paired:
         stats = "results/sortmerna_files/unpaired/rRNA/{sample}.log",
     params:
         extra = "--idx-dir ./idx",
-    threads: 24
+    threads: config["threads"]
     resources:
         mem_mb=4096,  # amount of memory for building the index
     log:
@@ -49,7 +49,7 @@ rule rna_trimming_not_paired:
     output:
         file = "results/trimmomatic_files/unpaired/{sample}_fwd.fq.gz"
     params:
-        threads = 24,
+        threads = config["threads"],
         log_dir = "logs/rna_trimming_not_paired/"
     conda:
         "../envs/rnaseq.yaml"
@@ -87,7 +87,7 @@ rule kallisto_quant_not_paired:
     output:
         abundance = "results/kallisto_files/unpaired/{sample}/abundance.h5"
     params:
-        threads = 24,
+        threads = config["threads"],
         output_dir = lambda wildcards, output: os.path.dirname(output.abundance),
         # "results/kallisto_files/unpaired/{sample}/"
         log_dir = "/logs/kallisto_quant_not_paired/"

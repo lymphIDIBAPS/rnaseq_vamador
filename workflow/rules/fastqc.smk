@@ -1,6 +1,6 @@
 ## Snakefile - FASTQC
 ##
-# configfile: "config/config.yaml"
+configfile: "config/config.yaml"
 
 
 paired_samples = glob_wildcards("FASTQ/rna_paired/merged/{sample_paired}_mergedF.fastq").sample_paired
@@ -31,7 +31,7 @@ rule paired_end_fastq_to_fastqc:
     params:
         outdir = lambda wildcards: "FASTQC/{}".format(wildcards.sample),
         logdir = "logs/paired_end_fastq_to_fastqc/",
-        threads=24,
+        threads = config["threads"],
     shell:
         """
         mkdir -p {params.outdir} {params.logdir}
@@ -58,7 +58,7 @@ rule single_end_fastq_to_fastqc:
     params:
         outdir = lambda wildcards: "FASTQC/single_end/{}".format(wildcards.sample),
         logdir = "logs/single_end_fastq_to_fastqc/",
-        threads=24,
+        threads = config["threads"],
     shell:
         """
         mkdir -p {params.outdir} {params.logdir}
@@ -87,7 +87,7 @@ rule filtered_fwd_rna_to_fastqc:
     params:
         outdir=lambda wildcards: "FASTQC/sortmerna/filtered/{}_fwd".format(wildcards.sample),
         logdir = "logs/filtered_fwd_rna_to_fastqc/",
-        threads=24,
+        threads = config["threads"],
     shell:
         """
         mkdir -p {params.outdir} {params.logdir}
@@ -115,7 +115,7 @@ rule filtered_rev_rna_to_fastqc:
     params:
         outdir=lambda wildcards: "FASTQC/sortmerna/filtered/{}_rev".format(wildcards.sample),
         logdir = "logs/filtered_rev_rna_to_fastqc/",
-        threads=24,
+        threads = config["threads"],
     shell:
         """
         mkdir -p {params.outdir} {params.logdir}
@@ -144,7 +144,7 @@ rule filtered_unpaired_rna_to_fastqc:
     params:
         outdir=lambda wildcards: "FASTQC/sortmerna/unpaired/filtered/{}".format(wildcards.sample),
         logdir = "logs/filtered_unpaired_rna_to_fastqc/",
-        threads=24,
+        threads = config["threads"],
     shell:
         """
         mkdir -p {params.outdir} {params.logdir}
@@ -176,7 +176,7 @@ rule trimmomatic_paired_rna_to_fastqc:
     params:
         outdir=lambda wildcards: "FASTQC/trimmomatic/{}".format(wildcards.sample),
         logdir = "logs/trimmomatic_paired_rna_to_fastqc/",
-        threads=24,
+        threads = config["threads"],
     shell:
         """
         mkdir -p {params.outdir} {params.logdir}
@@ -205,7 +205,7 @@ rule trimmomatic_unpaired_rna_to_fastqc:
     params:
         outdir=lambda wildcards: "FASTQC/trimmomatic/unpaired/{}".format(wildcards.sample),
         logdir = "logs/trimmomatic_unpaired_rna_to_fastqc/",
-        threads=24,
+        threads = config["threads"],
     shell:
         """
         mkdir -p {params.outdir} {params.logdir}
