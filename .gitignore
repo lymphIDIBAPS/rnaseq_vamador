@@ -7,11 +7,6 @@
 # Directory for FASTQC results
 FASTQC/
 
-# Directory for FASTQ data
-FASTQ/rna_paired/merged/
-FASTQ/rna_paired/unmerged/
-FASTQ/single_end/
-
 # Results directory
 results/
 
