@@ -5,14 +5,14 @@ configfile: "config/config.yaml"
 import os
 
 # Define the directory containing the FASTQ files
-fastq_dir = "FASTQ/rna_paired/unmerged"
+fastq_dir = config["fastq_dir_paired_unmerged"]
 
 # Define patterns to match specific files
 paired_end_sample_name = glob_wildcards(f"{fastq_dir}/{{sample}}_1_1.fastq").sample
 
 
 ## merge_technical_replicates: merge data from L1_F and L2_F
-## .fastq files must be located in a directory named FASTQ/rna_paired
+## .fastq files must be located in a directory named FASTQ/rna_paired/unmerged
 ## output will be directed to a directory named FASTQ/rna_paired/merged
 
 
@@ -71,7 +71,7 @@ rule rna_filtering:
 # IDX Dir is the index directory, which will be built the first time we run sortmeRNA
 # --idx-dir ./idx
 
-#  The correct --ref databases must be this one if we want to get the most astingent pipeline:
+#  The correct --ref databases must be this one if we want to get the most astringent pipeline:
 #  --ref resources/rRNA_databases_v4/silva-bac-16s-id90.fasta --ref resources/rRNA_databases_v4/silva-bac-23s-id98.fasta --ref resources/rRNA_databases_v4/silva-arc-16s-id95.fasta  --ref resources/rRNA_databases_v4/silva-arc-23s-id98.fasta --ref resources/rRNA_databases_v4/silva-euk-18s-id95.fasta  --ref resources/rRNA_databases_v4/silva-euk-28s-id98.fasta --ref resources/rRNA_databases_v4/rfam-5s-database-id98.fasta  --ref resources/rRNA_databases_v4/rfam-5.8s-database-id98.fasta
 
 #  However, I have found that the creator of the package recommends using only the following database:
