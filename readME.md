@@ -19,36 +19,56 @@ After installing, from the Start menu, open the “Anaconda Powershell Prompt (m
 
 You should see ```(base)``` in the command line prompt. This tells you that you’re in your base conda environment. To learn more about conda environments, see [Environments](https://docs.anaconda.com/working-with-conda/environments/).
 
-Check for a good installation with 
+Check for a good installation with:
 ```bash
 conda --version
-# conda 24.7.*
+# conda 24.X.X
 
 conda list
 # outputs a list of packages installed in the current environment (base)
 ```
 
+Now i will download Mamba to create snakemake
+I have trouble with SSL cert
+You can usually get a copy by clicking on the padlock icon in your browser when visiting any https site, then click around to view certificate, and download in PEM format.
+Then I will point conda to it in our system. 
+```bash
+conda config --set ssl_verify <pathToYourFile>.pem
+```
+
+Next we will install mamba in our base environment with:
+```bash
+conda install -n base -c conda-forge mamba
+```
+To check:
+```bash
+mamba --version
+# mamba 1.X.X
+# conda 24.X.X
+```
+Create a new environment with snakemake:
+```bash
+conda create -c conda-forge -c bioconda -n snakemake snakemake
+```
+Activate the snakemake environment:
+```bash
+conda activate snakemake
+```
+
 ## Usage
 
-```python
-import foobar
+```bash
+# For a test run of the pipeline
+snakemake --use-conda -j 24 -np
 
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
+# For a real test of the pipeline
+snakemake --use-conda -j 24
 ```
 
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
 
 ## License
 
