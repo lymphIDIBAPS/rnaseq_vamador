@@ -4,7 +4,7 @@
 ----
 This is a pipeline written in Python and bash, and with Snakemake as a workflow manager, that will output *kallisto* files (abundance.h5) from RNA seq samples.
 
-The paired samples must be placed in the directory named ***FASTQ/rna_paired***, and depending if they are merged or not, in the ***/merged*** or ***/unmerged*** directories.
+The paired samples must be placed in the directory named ***FASTQ/rna_paired***, and depending if they are merged or not, in the /***merged*** or /***unmerged*** directories.
 
 # Table of Contents
 1. [Installation](#installation)
@@ -13,28 +13,24 @@ The paired samples must be placed in the directory named ***FASTQ/rna_paired***,
 4. [Snakemake Environment](#snakemake-environment)
 5. [Snakemake Usage](#snakemake-usage)
 
-## Example2
-## Third Example
-## [Fourth Example](http://www.fourthexample.com) 
-
 ## Installation
 
 <!-- Use the package manager [miniconda](https://docs.anaconda.com/miniconda/) to install miniconda3. -->
 
 ### Windows
-Since Windows does not have access to the majority of packages we nedd in the pipeline, we need to install *Linux on Windows*, also known as *WSL*. In the ***Windows Power Shell***:
+Since Windows does not have access to the majority of packages we need in the pipeline, we need to install *Linux on Windows*, also known as *WSL*. In the ***Windows Power Shell***:
 ```powershell
 wsl --install
 # This command will install the Ubuntu distribution of Linux.
 ```
-If you run into an issue during the installation process, please check [the installation section of the troubleshooting guide.](https://learn.microsoft.com/en-us/windows/wsl/troubleshooting#installation-issues).
+If you run into an issue during the installation process, please check [the installation section of the troubleshooting guide](https://learn.microsoft.com/en-us/windows/wsl/troubleshooting#installation-issues).
 
 #### Set up your Linux user info
 
 Once you have installed WSL, you will need to create a user account and password for your newly installed Linux distribution. See the Best practices for [setting up a WSL development environment guide to learn more](https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-your-linux-username-and-password).
 
 #### Install Miniconda 3
-Once you have a working shell, run these three commands to quickly and quietly download the latest 64-bit Linux miniconda 3 installer, rename it to a shorter file name, silently install, and then delete the installer.
+Once you have a working shell in your *WSL*, run these three commands to quickly and quietly download the latest 64-bit Linux miniconda 3 installer, rename it to a shorter file name, silently install, and then delete the installer.
 ```bash
 mkdir -p ~/miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
@@ -96,17 +92,34 @@ mamba --version
 ``` -->
 
 ---
-#### Snakemake-Environment
-Create a new environment with snakemake installed:
+#### Snakemake Environment
+Now, with miniconda installed in our machine, we can create a new environment with snakemake installed:
 ```bash
 conda create -c conda-forge -c bioconda -n snakemake snakemake
 ```
-Activate the snakemake environment with:
+
+In case you are downloading from the Clinic network, you will have trouble with the SLL certificate. To solve any problems, do the following:
+1. You can usually get a copy by clicking on the padlock icon in your browser when visiting any https site, then click around to view certificate, and download in PEM format.
+
+2. Then we will point conda to it in our system. 
+```bash
+conda config --set ssl_verify <pathToYourFile>.pem
+```
+
+Once installed, we must activate and move into the snakemake environment with:
 ```bash
 conda activate snakemake
 ```
+If at any time we want to exit the environment, we can with:
+```bash
+conda deactivate
+```
+To see the packages we have currently installed in the environment, we can with:
+```bash
+conda list 
+```
 
-## Snakemake-Usage
+## Snakemake Usage
 
 ```bash
 # For a test run of the pipeline

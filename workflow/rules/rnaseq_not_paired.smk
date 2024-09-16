@@ -5,7 +5,7 @@ configfile: "config/config.yaml"
 import os
 
 # Define the directory containing the FASTQ files
-single_end_dir = "FASTQ/single_end"
+single_end_dir = config["fastq_dir_single_end"]
 
 # Define patterns to match specific files
 single_end_sample_name = glob_wildcards(f"{single_end_dir}/{{sample}}.fastq").sample
@@ -90,11 +90,11 @@ rule kallisto_quant_not_paired:
         threads = config["threads"],
         output_dir = lambda wildcards, output: os.path.dirname(output.abundance),
         # "results/kallisto_files/unpaired/{sample}/"
-        log_dir = "/logs/kallisto_quant_not_paired/"
+        log_dir = "logs/kallisto_quant_not_paired/"
     conda:
         "../envs/rnaseq.yaml"
     log:
-        "logs/kallisto_quant/{sample}.log"
+        "logs/kallisto_quant_not_paired/{sample}.log"
     envmodules:
         "/apps/modules/modulefiles/compilers/intel/2018.3"
         "/apps/modules/modulefiles/environment/impi/2018.3"
@@ -105,5 +105,5 @@ rule kallisto_quant_not_paired:
     shell:
         """
         mkdir -p {params.output_dir} {params.log_dir}
-        kallisto quant -i {input.index_path} -o {params.output_dir} --single -l 260 -s 20 -t {params.threads} {input.sample_not_paired} > {log}
+        kallisto quant -i {input.index_path} -o {params.output_dir} --single -l 260 -s 20 -t {params.threads} {input.sample_not_paired} >{log}
         """

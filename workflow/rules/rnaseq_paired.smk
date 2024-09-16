@@ -177,7 +177,7 @@ rule kallisto_quant:
         threads = config["threads"],
         output_dir = lambda wildcards, output: os.path.dirname(output.abundance),
         # "results/kallisto_files/{sample}/"
-        log_dir = "/logs/kallisto_quant/"
+        log_dir = "logs/kallisto_quant/"
     conda:
         "../envs/rnaseq.yaml"
     log:
@@ -192,5 +192,5 @@ rule kallisto_quant:
     shell:
         """
         mkdir -p {params.output_dir} {params.log_dir}
-        kallisto quant -i {input.index_path} -o {params.output_dir} -t {params.threads} {input.for_paired} {input.rev_paired} > {log}
+        kallisto quant -i {input.index_path} -o {params.output_dir} -t {params.threads} {input.for_paired} {input.rev_paired} {log}
         """

@@ -22,3 +22,6 @@ workflow/report
 
 # Logs directory
 logs/
+
+# Any fastq file
+*.fastq
