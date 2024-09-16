@@ -4,20 +4,50 @@
 ----
 This is a pipeline written in Python and bash, and with Snakemake as a workflow manager, that will output *kallisto* files (abundance.h5) from RNA seq samples.
 
-The paired samples must be placed in the directory named ***FASTQ/rna_paired***, and depending if they are merged or not, in the /***merged*** or /***unmerged*** directories.
+The samples can be placed in any directory, but the path must be specified in the ***config/config.yaml*** file. 
 
 # Table of Contents
 1. [Installation](#installation)
-2. [Windows](#windows)
-3. [macOS](#macos)
-4. [Snakemake Environment](#snakemake-environment)
-5. [Snakemake Usage](#snakemake-usage)
+2. [Linux](#linux)
+3. [Windows](#windows)
+4. [macOS](#macos)
+5. [Snakemake Environment](#snakemake-environment)
+6. [Clone the repository](#clone-the-repository)
+7. [Snakemake Usage](#snakemake-usage)
 
 ## Installation
 
 <!-- Use the package manager [miniconda](https://docs.anaconda.com/miniconda/) to install miniconda3. -->
+### Linux
+#### Install Miniconda 3
+Open a Linux shell, then run these three commands to quickly and quietly download the latest 64-bit Linux miniconda 3 installer, rename it to a shorter file name, silently install, and then delete the installer.
+```bash
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm ~/miniconda3/miniconda.sh
+```
+After installing, initialize your newly-installed Miniconda. The following commands initialize for bash and zsh shells:
+```bash
+~/miniconda3/bin/conda init bash
+```
+```zsh
+~/miniconda3/bin/conda init zsh
+```
+You should see ```(base)``` in the command line prompt. This tells you that you’re in your base conda environment. To learn more about conda environments, see [Environments](https://docs.anaconda.com/working-with-conda/environments/).
 
+Check for a good installation with:
+```bash
+conda --version
+# conda 24.X.X
+
+conda list
+# outputs a list of packages installed in the current environment (base)
+```
+---
 ### Windows
+<details><summary>Windows Installation</summary>
+
 Since Windows does not have access to the majority of packages we need in the pipeline, we need to install *Linux on Windows*, also known as *WSL*. In the ***Windows Power Shell***:
 ```powershell
 wsl --install
@@ -44,7 +74,21 @@ After installing, initialize your newly-installed Miniconda. The following comma
 ```zsh
 ~/miniconda3/bin/conda init zsh
 ```
+You should see ```(base)``` in the command line prompt. This tells you that you’re in your base conda environment. To learn more about conda environments, see [Environments](https://docs.anaconda.com/working-with-conda/environments/).
+
+Check for a good installation with:
+```bash
+conda --version
+# conda 24.X.X
+
+conda list
+# outputs a list of packages installed in the current environment (base)
+```
+</details>
+
+----
 ### macOS
+<details><summary>macOS Installation</summary>
 These four commands download the latest M1 version of the MacOS installer, rename it to a shorter file name, silently install, and then delete the installer:
 ```bash
 mkdir -p ~/miniconda3
@@ -90,10 +134,12 @@ mamba --version
 # mamba 1.X.X
 # conda 24.X.X
 ``` -->
+</details>
 
 ---
-#### Snakemake Environment
+### Snakemake Environment
 Now, with miniconda installed in our machine, we can create a new environment with snakemake installed:
+
 ```bash
 conda create -c conda-forge -c bioconda -n snakemake snakemake
 ```
@@ -109,6 +155,8 @@ conda config --set ssl_verify <pathToYourFile>.pem
 Once installed, we must activate and move into the snakemake environment with:
 ```bash
 conda activate snakemake
+snakemake --version
+# 8.16.X
 ```
 If at any time we want to exit the environment, we can with:
 ```bash
@@ -118,15 +166,36 @@ To see the packages we have currently installed in the environment, we can with:
 ```bash
 conda list 
 ```
+### Clone the repository
 
+1. Above the list of files, click Code.
+
+![image_code](image.png)
+
+2. Copy the URL for the repository. To clone the repository using HTTPS, under "HTTPS", copy the link provided.
+3. Open a Terminal.
+4. Change the current working directory to the location where you want the cloned directory. For example, ```cd rna_seq_vamador```. Make sure that the directory exists before you move into it.
+5. Type ```git clone https://github.com/Programa-de-neoplasias-linfoides/rnaseq_virginia.git```.
+6. Press Enter to create your local clone.
+```bash
+git clone https://github.com/Programa-de-neoplasias-linfoides/rnaseq_virginia.git
+> Cloning into `rna_seq_vamador`...
+> remote: Counting objects: 10, done.
+> remote: Compressing objects: 100% (8/8), done.
+> remove: Total 10 (delta 1), reused 10 (delta 1)
+> Unpacking objects: 100% (10/10), done.
+```
 ## Snakemake Usage
+When we have the cloned repository, we can proced and add our sample data to the FASTQ directory. This is not mandatory, as in ***config/config.yaml*** file we can edit and set any path to our sample data. 
+
+In the same file we can edit the number of threads or computer has, so it will run adapted to the current resources we have available. 
 
 ```bash
 # For a test run of the pipeline
-snakemake --use-conda -j 24 -np
+snakemake --use-conda -np
 
 # For a real test of the pipeline
-snakemake --use-conda -j 24
+snakemake --use-conda
 ```
 
 ## Contributing

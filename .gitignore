@@ -25,3 +25,6 @@ logs/
 
 # Any fastq file
 *.fastq
+
+# Any images
+*.png
