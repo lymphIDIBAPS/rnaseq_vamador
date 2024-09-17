@@ -1,7 +1,6 @@
 name: cutandrun_snakemake
 channels:
   - conda-forge
-  - defaults
   - bioconda
 dependencies:
   - python
