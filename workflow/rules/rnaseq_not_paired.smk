@@ -30,6 +30,8 @@ rule rna_filtering_not_paired:
     threads: config["threads"]
     resources:
         mem_mb=4096,  # amount of memory for building the index
+    conda:
+        "../envs/sortmerna.yaml"
     log:
         "workflow/report/{sample}_se.log",
     envmodules:
