@@ -13,11 +13,11 @@ results/
 # Directory created by sortmerna
 readb/
 
-# Index used by sortmerna package
+# Index used by sortmerna
 idx/
 *.idx
 
-# Reports from sortmerna package
+# Reports from sortmerna
 workflow/report
 
 # Logs directory
@@ -28,3 +28,6 @@ logs/
 
 # Any images
 *.png
+
+# Any .tar.gz file
+*.tar.gz

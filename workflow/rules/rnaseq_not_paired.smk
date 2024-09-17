@@ -11,13 +11,13 @@ single_end_dir = config["fastq_dir_single_end"]
 single_end_sample_name = glob_wildcards(f"{single_end_dir}/{{sample}}.fastq").sample
 
 
-## rna_filtering: filter RNA from non paired reads
+## sortmerna_not_paired: filter RNA from non paired reads
 ## .fastq files must be located in a directory named FASTQ/single_end
 ## output will be directed to a directory named results/sortmerna_files/unpaired/rRNA or /rRNAf, 
 ## the first are aligned reads and the second rejected reads 
 
 
-rule rna_filtering_not_paired:
+rule sortmerna_not_paired:
     input:
         ref = ["resources/rRNA_databases_v4/smr_v4.3_default_db.fasta"],
         reads = "FASTQ/single_end/{sample}.fastq",
@@ -33,7 +33,7 @@ rule rna_filtering_not_paired:
     conda:
         "../envs/sortmerna.yaml"
     log:
-        "workflow/report/{sample}_se.log",
+        "logs/sortmerna_not_paired/{sample}.log",
     envmodules:
         "/apps/modules/modulefiles/applications/sortmerna/4.3.6.lua"
     wrapper:

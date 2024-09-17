@@ -33,13 +33,13 @@ rule merge_technical_replicates:
         """
 
 
-## rna_filtering: filter RNA
+## sortmerna_paired: filter RNA
 ## .fastq files must be located in a directory named FASTQ/rna_paired/merged
 ## output will be directed to a directory named results/sortmerna_files/rRNA or /rRNAf, 
 ## the first are aligned reads and the second rejected reads 
 
 
-rule rna_filtering:
+rule sortmerna_paired:
     input:
         merged_F = "FASTQ/rna_paired/merged/{sample}_mergedF.fastq",
         merged_R = "FASTQ/rna_paired/merged/{sample}_mergedR.fastq",
@@ -56,12 +56,12 @@ rule rna_filtering:
     conda:
         "../envs/rnaseq.yaml"
     log:
-        "logs/rna_filtering/{sample}.log"
+        "logs/sortmerna_paired/{sample}.log"
     envmodules:
         "/apps/modules/modulefiles/applications/sortmerna/4.3.6.lua"
     shell:
         """
-        mkdir -p results/sortmerna_files/rRNA results/sortmerna_files/rRNAf logs/sortmerna_files
+        mkdir -p results/sortmerna_files/rRNA results/sortmerna_files/rRNAf logs/sortmerna_paired
         sortmerna --ref resources/rRNA_databases_v4/smr_v4.3_default_db.fasta --reads {input.merged_F} --reads {input.merged_R} \
         --aligned {params.aligned} --other {params.other} --workdir /home/oscar/rnaseq --fastx --paired_in -threads {params.threads} \
         -out2 -v --idx-dir ./idx > {log}
