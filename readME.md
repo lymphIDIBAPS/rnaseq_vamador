@@ -158,14 +158,8 @@ conda activate snakemake
 snakemake --version
 # 8.16.X
 ```
-If at any time we want to exit the environment, we can with:
-```bash
-conda deactivate
-```
-To see the packages we have currently installed in the environment, we can with:
-```bash
-conda list 
-```
+If at any time we want to exit the environment, we can with```conda deactivate```, and to get back in with ```conda activate snakemake```.
+To see the packages we have currently installed in the environment, we can with```conda list```.
 ### Clone the repository
 
 1. Above the list of files, click Code.

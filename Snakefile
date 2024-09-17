@@ -1,3 +1,5 @@
+containerized: "docker://Dockerfile"
+
 include: "workflow/rules/fastqc.smk"
 include: "workflow/rules/rnaseq_paired.smk"
 include: "workflow/rules/rnaseq_not_paired.smk"
