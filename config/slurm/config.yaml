@@ -4,10 +4,10 @@ cluster:
     mkdir -p slgpfs/projects/rcli/rcli186814/log/{rule}/ &&
     sbatch
         --job-name={rule}-{wildcards}
-        --account={resources.account}
-        --partition={resources.partition}
-        --mail-user={resources.email}
-        --mail-type={resources.mail_on}
+        --account=cli99
+        --partition=debug
+        --mail-user=baeza@recerca.clinic.cat
+        --mail-type=FAIL
         --nodes=1
         --ntasks=9
         --cpus-per-task={threads}
@@ -16,10 +16,6 @@ cluster:
         --output=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.out
         --error=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.err
 resources:
-  - account="cli99"
-  - partition=debug
-  - email=baeza@recerca.clinic.cat
-  - mail_on=FAIL
   - mem_mb=1024
   - time="2:00:00"
 threads: 6
