@@ -10,12 +10,11 @@ cluster:
         --mail-type=FAIL
         --nodes=1
         --ntasks=9
-        --cpus-per-task={threads}
+        --cpus-per-task=6
         --mem-per-cpu=1024MB
         --time="2:00:00"
         --output=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.out
         --error=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.err
-threads: 6
 conda-frontend: "conda"
 immediate-submit: False
 jobs: 100
