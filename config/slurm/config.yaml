@@ -16,7 +16,7 @@ cluster:
         --output=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.out
         --error=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.err
 resources:
-  - account=cli99
+  - account="cli99"
   - partition=debug
   - email=baeza@recerca.clinic.cat
   - mail_on=FAIL
