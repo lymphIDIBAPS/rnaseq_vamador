@@ -17,7 +17,7 @@ cluster:
         --error=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.err
 resources:
   - account=cli99
-  - partition=main
+  - partition=debug
   - email=baeza@recerca.clinic.cat
   - mail_on=FAIL
   - mem_mb=1024
@@ -25,7 +25,7 @@ resources:
 threads: 6
 conda-frontend: "conda"
 immediate-submit: False
-jobs: 4999
+jobs: 100
 keep-going: true
 latency-wait: 120
 max-jobs-per-second: 100
