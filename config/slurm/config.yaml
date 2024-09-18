@@ -11,13 +11,10 @@ cluster:
         --nodes=1
         --ntasks=9
         --cpus-per-task={threads}
-        --mem-per-cpu={resources.mem_mb}MB
-        --time={resources.time}
+        --mem-per-cpu=1024MB
+        --time="2:00:00"
         --output=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.out
         --error=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.err
-resources:
-  - mem_mb=1024
-  - time="2:00:00"
 threads: 6
 conda-frontend: "conda"
 immediate-submit: False
