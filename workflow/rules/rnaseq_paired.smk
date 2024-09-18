@@ -52,7 +52,7 @@ rule sortmerna_paired:
         # "results/sortmerna_files/rRNA/{sample}"
         other = lambda wildcards, output: os.path.join(os.path.dirname(output.other), wildcards.sample),
         # "results/sortmerna_files/rRNAf/{sample}"
-        threads = config["threads"],
+        threads = 6,
     conda:
         "../envs/rnaseq.yaml"
     log:
@@ -95,7 +95,7 @@ rule rna_trimming:
         rev_paired = "results/trimmomatic_files/{sample}_rev_p.fq.gz",
         rev_unpaired = "results/trimmomatic_files/{sample}_rev_up.fq.gz"
     params:
-        threads = config["threads"],
+        threads = 6,
         log_dir = "logs/rna_trimming/"
     conda:
         "../envs/rnaseq.yaml"
@@ -143,7 +143,7 @@ rule kallisto_index:
     output:
         index_out_path = "resources/kallisto/Homo_sapiens.GRCh38.cdna.all.release-100.idx"
     params:
-        threads = config["threads"],
+        threads = 6,
         log_dir = "logs/kallisto_index/"
     conda:
         "../envs/rnaseq.yaml"
@@ -174,7 +174,7 @@ rule kallisto_quant:
     output:
         abundance = "results/kallisto_files/{sample}/abundance.h5",
     params:
-        threads = config["threads"],
+        threads = 6,
         output_dir = lambda wildcards, output: os.path.dirname(output.abundance),
         # "results/kallisto_files/{sample}/"
         log_dir = "logs/kallisto_quant/"

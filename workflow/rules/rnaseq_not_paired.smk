@@ -27,7 +27,7 @@ rule sortmerna_not_paired:
         stats = "results/sortmerna_files/unpaired/rRNA/{sample}.log",
     params:
         extra = "--idx-dir ./idx",
-    threads: config["threads"]
+    threads: 6
     resources:
         mem_mb=4096,  # amount of memory for building the index
     conda:
@@ -51,7 +51,7 @@ rule rna_trimming_not_paired:
     output:
         file = "results/trimmomatic_files/unpaired/{sample}_fwd.fq.gz"
     params:
-        threads = config["threads"],
+        threads = 6,
         log_dir = "logs/rna_trimming_not_paired/"
     conda:
         "../envs/rnaseq.yaml"
@@ -89,7 +89,7 @@ rule kallisto_quant_not_paired:
     output:
         abundance = "results/kallisto_files/unpaired/{sample}/abundance.h5"
     params:
-        threads = config["threads"],
+        threads = 6,
         output_dir = lambda wildcards, output: os.path.dirname(output.abundance),
         # "results/kallisto_files/unpaired/{sample}/"
         log_dir = "logs/kallisto_quant_not_paired/"
