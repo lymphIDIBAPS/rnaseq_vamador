@@ -8,18 +8,18 @@ default-resources:
     tasks: 9
     cpus_per_task: 6
     mem_mb_per_cpu: 1024MB
-    conda-frontend: "conda"
-    immediate-submit: False
-    jobs: 100
-    keep-going: true
-    latency-wait: 120
-    max-jobs-per-second: 100
-    max-status-checks-per-second: 10
-    notemp: true
-    printshellcmds: true
-    scheduler: greedy
-    use-conda: true
-    verbose: true
+    # conda-frontend: "conda"
+    # immediate-submit: False
+    # jobs: 100
+    # keep-going: true
+    # latency-wait: 120
+    # max-jobs-per-second: 100
+    # max-status-checks-per-second: 10
+    # notemp: true
+    # printshellcmds: true
+    # scheduler: greedy
+    # use-conda: true
+    # verbose: true
 
 slurm_extra:
         --job-name={rule}-{wildcards}
