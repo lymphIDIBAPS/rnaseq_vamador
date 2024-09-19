@@ -1,20 +1,19 @@
 # Cluster configuration
 
-cluster:
-    mkdir -p slgpfs/projects/rcli/rcli186814/log/{rule}/ &&
-    sbatch
+executor: slurm
+slurm_partition: debug
+slurm_account: cli99
+nodes: 1
+tasks: 9
+cpus_per_task: 6
+mem_mb_per_cpu: 1024MB
+runtime: "2:00:00"
+slurm_extra:
         --job-name={rule}-{wildcards}
-        --account=cli99
-        --partition=debug
         --mail-user=baeza@recerca.clinic.cat
         --mail-type=FAIL
-        --nodes=1
-        --ntasks=9
-        --cpus-per-task=6
-        --mem-per-cpu=1024MB
-        --time="2:00:00"
-        --output=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.out
-        --error=slgpfs/projects/rcli/rcli186814/log/{rule}/{rule}.{wildcards}.err
+        --output=slgpfs/projects/rcli/rcli186814/rnaseq_virginia/logs/{rule}/{rule}.{wildcards}.out
+        --error=slgpfs/projects/rcli/rcli186814/rnaseq_virginia/logs/{rule}/{rule}.{wildcards}.err
 conda-frontend: "conda"
 immediate-submit: False
 jobs: 100
