@@ -1,28 +1,29 @@
 # Cluster configuration
 
-executor: slurm
-slurm_partition: debug
-slurm_account: cli99
-nodes: 1
-tasks: 9
-cpus_per_task: 6
-mem_mb_per_cpu: 1024MB
-runtime: "2:00:00"
+default-resources:
+    slurm_partition: cli
+    slurm_account:   cli99
+    runtime: "2:00:00"
+    nodes: 1
+    tasks: 9
+    cpus_per_task: 6
+    mem_mb_per_cpu: 1024MB
+    conda-frontend: "conda"
+    immediate-submit: False
+    jobs: 100
+    keep-going: true
+    latency-wait: 120
+    max-jobs-per-second: 100
+    max-status-checks-per-second: 10
+    notemp: true
+    printshellcmds: true
+    scheduler: greedy
+    use-conda: true
+    verbose: true
+
 slurm_extra:
         --job-name={rule}-{wildcards}
         --mail-user=baeza@recerca.clinic.cat
         --mail-type=FAIL
         --output=slgpfs/projects/rcli/rcli186814/rnaseq_virginia/logs/{rule}/{rule}.{wildcards}.out
         --error=slgpfs/projects/rcli/rcli186814/rnaseq_virginia/logs/{rule}/{rule}.{wildcards}.err
-conda-frontend: "conda"
-immediate-submit: False
-jobs: 100
-keep-going: true
-latency-wait: 120
-max-jobs-per-second: 100
-max-status-checks-per-second: 10
-notemp: true
-printshellcmds: true
-scheduler: greedy
-use-conda: true
-verbose: true
