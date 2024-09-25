@@ -153,7 +153,8 @@ rule kallisto_index:
         "/apps/modules/modulefiles/compilers/intel/2018.3"
         "/apps/modules/modulefiles/environment/impi/2018.3"
         "/apps/modules/modulefiles/libraries/zlib/1.2.11"
-        "/apps/modules/modulefiles/libraries/hdf5/1.14.1.lua"
+        "/apps/modules/modulefiles/compilers/gcc/12.2.0"
+        "/apps/modules/modulefiles/libraries/hdf5/1.10.2.lua"
         "/apps/modules/modulefiles/libraries/szip/2.1.1.lua"
         "/apps/modules/modulefiles/applications/kallisto/0.46.1"
     shell:
@@ -186,7 +187,8 @@ rule kallisto_quant:
         "/apps/modules/modulefiles/compilers/intel/2018.3"
         "/apps/modules/modulefiles/environment/impi/2018.3"
         "/apps/modules/modulefiles/libraries/zlib/1.2.11"
-        "/apps/modules/modulefiles/libraries/hdf5/1.14.1.lua"
+        "/apps/modules/modulefiles/compilers/gcc/12.2.0"
+        "/apps/modules/modulefiles/libraries/hdf5/1.10.2.lua"
         "/apps/modules/modulefiles/libraries/szip/2.1.1.lua"
         "/apps/modules/modulefiles/applications/kallisto/0.46.1"
     shell:
