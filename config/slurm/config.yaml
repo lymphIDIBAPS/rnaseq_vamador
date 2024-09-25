@@ -3,7 +3,7 @@
 default-resources:
     slurm_account:   cli99
     slurm_partition: main
-    runtime: "'10000'"
+    runtime: "'120'" # must be 120 if we want to run in debug qos
     nodes: 2
     tasks: 20
     cpus_per_task: 2
