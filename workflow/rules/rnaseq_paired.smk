@@ -152,13 +152,13 @@ rule kallisto_index:
     log:
         "logs/kallisto_index/index.log"
     envmodules:
-        "/apps/modules/modulefiles/compilers/intel/2018.3"
-        "/apps/modules/modulefiles/environment/impi/2018.3"
-        "/apps/modules/modulefiles/libraries/zlib/1.2.11"
-        "/apps/modules/modulefiles/compilers/gcc/12.2.0"
-        "/apps/modules/modulefiles/libraries/hdf5/1.10.2.lua"
-        "/apps/modules/modulefiles/libraries/szip/2.1.1.lua"
-        "/apps/modules/modulefiles/applications/kallisto/0.46.1"
+        "intel/2018.3"
+        "impi/2018.3"
+        "zlib/1.2.11"
+        "gcc/12.2.0"
+        "hdf5/1.10.2.lua"
+        "szip/2.1.1.lua"
+        "kallisto/0.46.1"
     shell:
         """
         mkdir -p {params.log_dir}
@@ -186,13 +186,13 @@ rule kallisto_quant:
     log:
         "logs/kallisto_quant/{sample}.log"
     envmodules:
-        "/apps/modules/modulefiles/compilers/intel/2018.3"
-        "/apps/modules/modulefiles/environment/impi/2018.3"
-        "/apps/modules/modulefiles/libraries/zlib/1.2.11"
-        "/apps/modules/modulefiles/compilers/gcc/12.2.0"
-        "/apps/modules/modulefiles/libraries/hdf5/1.10.2.lua"
-        "/apps/modules/modulefiles/libraries/szip/2.1.1.lua"
-        "/apps/modules/modulefiles/applications/kallisto/0.46.1"
+        "intel/2018.3"
+        "impi/2018.3"
+        "zlib/1.2.11"
+        "gcc/12.2.0"
+        "hdf5/1.10.2.lua"
+        "szip/2.1.1.lua"
+        "kallisto/0.46.1"
     shell:
         """
         mkdir -p {params.output_dir} {params.log_dir}
