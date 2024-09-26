@@ -101,10 +101,12 @@ rule rna_trimming:
         "../envs/rnaseq.yaml"
     log:
         "logs/rna_trimming/{sample}.log"
+    envmodules:
+        "java/12.0.2"
     shell:
         """
         mkdir -p results/trimmomatic_files {params.log_dir}
-        trimmomatic PE -threads {params.threads} -phred33 -trimlog {log} {input.forward} {input.rev} \
+        java -jar /apps/TRIMMOMATIC/0.39/trimmomatic-0.39.jar PE -threads {params.threads} -phred33 -trimlog {log} {input.forward} {input.rev} \
         {output.forward_paired} {output.forward_unpaired} {output.rev_paired} {output.rev_unpaired} \
         ILLUMINACLIP:TruSeq3-PE:2:30:10 SLIDINGWINDOW:5:20 MINLEN:50
         """
