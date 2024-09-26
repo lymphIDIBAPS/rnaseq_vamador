@@ -39,7 +39,7 @@ rule sortmerna_not_paired:
     wrapper:
         # Use first line if we are running in an offline cluster, 
         # the second one if we are running it in an online machine
-        "file://slgpfs/projects/rcli/rcli186814/snakemake_wrappers/bio/sortmerna"
+        "file://slgpfs/projects/rcli/rcli186814/snakemake_wrappers/bio/sortmerna/"
         # "v3.14.0/bio/sortmerna"
 
 
