@@ -58,7 +58,7 @@ rule sortmerna_paired:
     log:
         "logs/sortmerna_paired/{sample}.log"
     envmodules:
-        "/apps/modules/modulefiles/applications/sortmerna/4.3.6.lua"
+        "sortmerna/4.3.6"
     shell:
         """
         mkdir -p results/sortmerna_files/rRNA results/sortmerna_files/rRNAf logs/sortmerna_paired
@@ -152,12 +152,12 @@ rule kallisto_index:
     log:
         "logs/kallisto_index/index.log"
     envmodules:
-        "intel/2018.3"
-        "impi/2018.3"
-        "zlib/1.2.11"
-        "gcc/12.2.0"
-        "hdf5/1.10.2.lua"
-        "szip/2.1.1.lua"
+        "intel/2018.3",
+        "impi/2018.3",
+        "zlib/1.2.11",
+        "gcc/12.2.0",
+        "hdf5/1.10.2",
+        "szip/2.1.1",
         "kallisto/0.46.1"
     shell:
         """
@@ -186,12 +186,12 @@ rule kallisto_quant:
     log:
         "logs/kallisto_quant/{sample}.log"
     envmodules:
-        "intel/2018.3"
-        "impi/2018.3"
-        "zlib/1.2.11"
-        "gcc/12.2.0"
-        "hdf5/1.10.2.lua"
-        "szip/2.1.1.lua"
+        "intel/2018.3",
+        "impi/2018.3",
+        "zlib/1.2.11",
+        "gcc/12.2.0",
+        "hdf5/1.10.2",
+        "szip/2.1.1",
         "kallisto/0.46.1"
     shell:
         """

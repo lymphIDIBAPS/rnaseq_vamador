@@ -35,7 +35,7 @@ rule sortmerna_not_paired:
     log:
         "logs/sortmerna_not_paired/{sample}.log",
     envmodules:
-        "/apps/modules/modulefiles/applications/sortmerna/4.3.6.lua"
+        "sortmerna/4.3.6"
     wrapper:
         # Use first line if we are running in an offline cluster, 
         # the second one if we are running it in an online machine
@@ -103,12 +103,12 @@ rule kallisto_quant_not_paired:
     log:
         "logs/kallisto_quant_not_paired/{sample}.log"
     envmodules:
-        "intel/2018.3"
-        "impi/2018.3"
-        "zlib/1.2.11"
-        "gcc/12.2.0"
-        "hdf5/1.10.2.lua"
-        "szip/2.1.1.lua"
+        "intel/2018.3",
+        "impi/2018.3",
+        "zlib/1.2.11",
+        "gcc/12.2.0",
+        "hdf5/1.10.2",
+        "szip/2.1.1",
         "kallisto/0.46.1"
     shell:
         """
