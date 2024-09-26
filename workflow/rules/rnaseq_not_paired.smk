@@ -37,7 +37,10 @@ rule sortmerna_not_paired:
     envmodules:
         "/apps/modules/modulefiles/applications/sortmerna/4.3.6.lua"
     wrapper:
-        "v3.14.0/bio/sortmerna"
+        # Use first line if we are running in an offline cluster, 
+        # the second one if we are running it in an online machine
+        "file://slgpfs/projects/rcli/rcli186814/snakemake_wrappers/bio/sortmerna"
+        # "v3.14.0/bio/sortmerna"
 
 
 ## rna_trimming_not_paired: trim and crop filtered data
