@@ -4,11 +4,12 @@ default-resources:
     slurm_account:   cli99
     slurm_partition: main
     runtime: "'7200'" # must be 7200 if we want to run in debug qos
-    nodes: 2
+    nodes: 1
     tasks: 20
-    cpus_per_task: 2
-    mem_mb_per_cpu: 2G
+    cpus_per_task: 3
+    mem_mb_per_cpu: 3G
     slurm_extra: "'--mail-user=baeza@recerca.clinic.cat --qos=debug'"
+executor: slurm
 immediate-submit: False
 jobs: 100
 keep-going: true

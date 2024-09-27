@@ -2,7 +2,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/Programa-de-neoplasias-linfoides/rnaseq_virginia)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Programa-de-neoplasias-linfoides/rnaseq_virginia)
 ----
-This is a pipeline written in Python and bash, and with Snakemake as a workflow manager, that will output *kallisto* files (abundance.h5) from RNA seq samples.
+This is a pipeline written in Python and bash, and with Snakemake as a workflow manager, that will output *kallisto* files (abundance.h5) from RNA seq samples. These samples can be in .fastq or compressed format. 
 
 The samples can be placed in any directory, but the path must be specified in the ***config/config.yaml*** file. 
 
@@ -182,16 +182,57 @@ git clone https://github.com/Programa-de-neoplasias-linfoides/rnaseq_virginia.gi
 ## Snakemake Usage
 When we have the cloned repository, we can proced and add our sample data to the FASTQ directory. This is not mandatory, as in ***config/config.yaml*** file we can edit and set any path to our sample data. 
 
-In the same file we can edit the number of threads or computer has, so it will run adapted to the current resources we have available. 
+In the same file we can edit the number of threads our computer has, so it will run adapted to the current resources we have available. 
 
 ```bash
 # For a test run of the pipeline
 snakemake --use-conda -np
 
-# For a real test of the pipeline
+# For a real run of the pipeline
 snakemake --use-conda
 ```
 
+## Run the pipeline in a HPC
+If we have many samples and our computer does not have enough computational power, we can run the pipeline in a cluster. This pipeline has been prepared to run in the [StarLife](https://www.bsc.es/supportkc/docs/StarLife/intro) cluster, in the [BSC](https://www.bsc.es/).
+
+1. Make a new directory named ***/slgpfs/*** in your computer and mount it to the same directory in StarLife:
+```bash
+mkdir /home/user/slgpfs
+sshfs -o allow_other your_bsc_user@sl1.bsc.es:/slgpfs/ /home/user/slgpfs/
+```
+This will allow you to see and work on the custer from your computer system directly.
+
+2. On your computer, navigate to the directory: ***/home/user/slgpfs/projects/group_folder***
+
+3. Download and extract the following file to the directory, in which we have a full conda environment ready to run snakemake:
+[Snakemake Conda Environment](https://drive.google.com/file/d/1ZQB02jZhhr5G_DlbhDKFHiqZ7AVuCxqx/view?usp=sharing)
+
+4. Clone this repository in the directory, following the steps from [Clone the repository](#clone-the-repository)
+
+5. Now, connect to the cluster:
+```bash
+ssh your_username@sl1.bsc.es # or
+ssh your_username@sl2.bsc.es
+```
+6. In the cluster, navigate to the cloned repository: ***/slgpfs/projects/group_folder/rna_seq_vamador***
+
+7. Now, activate the snakemake_bsc environment:
+```bash
+source ../snakemake_bsc/bin/activate
+```
+In your terminal, you should now see something like: ```(snakemake_bsc) your_username@sllogin1```
+
+8. At this point, in your local machine, you can move your samples to the directory ***/slgpfs/projects/group_folder/rna_seq_vamador/FASTQ***. 
+
+9. Now, you can run the pipeline from the cluster with the command:
+```bash
+# For a test run of the pipeline
+snakemake --profile config/slurm/ --use-envmodules -np
+
+# For a real run of the pipeline
+snakemake --profile config/slurm/ --use-envmodules
+``` 
+Remember to check the files in ***/config/slurm/config.yaml*** for the cluster configuration and the 
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
