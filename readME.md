@@ -232,7 +232,13 @@ snakemake --profile config/slurm/ --use-envmodules -np
 # For a real run of the pipeline
 snakemake --profile config/slurm/ --use-envmodules
 ``` 
-Remember to check the files in ***/config/slurm/config.yaml*** for the cluster configuration and the 
+This command above will run the pipeline with the configuration from the file located in ***/slgpfs/projects/group_folder/rna_seq_vamador/config/config.yaml***. Be shure to check and modify the configuration file to alter the pipeline with your desired options. 
+
+#### TO DO ####
+Add configuration to RNA trimming
+
+Remember to check the files in ***/config/slurm/config.yaml*** for the cluster configuration. Review all the items and in case something is not clear you can check [in this website](https://snakemake.github.io/snakemake-plugin-catalog/plugins/executor/slurm.html#advanced-resource-specifications) what each term means in the configuration. 
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first

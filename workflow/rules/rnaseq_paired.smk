@@ -111,7 +111,8 @@ rule rna_trimming:
         ILLUMINACLIP:TruSeq3-PE:2:30:10 SLIDINGWINDOW:5:20 MINLEN:50
         """
 
-# This configuration of the trimmomatic run is taken from the script of Marta Sureda.
+# If we want to run in our PC, we need to remove "java -jar /apps/TRIMMOMATIC/0.39/trimmomatic-0.39.jar" and leave only "trimmomatic" 
+
 # This will perform the following in this order:
 
 # Remove Illumina adapters provided in the TruSeq3-PE.fa file (provided). Initially Trimmomatic will look 
