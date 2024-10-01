@@ -5,3 +5,21 @@ fastq_dir_paired_unmerged: "FASTQ/rna_paired/unmerged"
 
 # Define the directory containing the FASTQ files
 fastq_dir_single_end: "FASTQ/single_end"
+
+#### TRIMMOMATIC OPTIONS ####
+
+seed_mismatches: 2
+
+palindrome_clip_threshold: 30
+
+simple_clip_threshold: 10
+
+window_size: 5
+
+required_qual: 20
+
+leading: 3
+
+trailing: 3
+
+minlen: 50

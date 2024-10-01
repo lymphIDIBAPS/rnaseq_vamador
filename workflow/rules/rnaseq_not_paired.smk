@@ -55,7 +55,15 @@ rule rna_trimming_not_paired:
         file = "results/trimmomatic_files/unpaired/{sample}_fwd.fq.gz"
     params:
         threads = 6,
-        log_dir = "logs/rna_trimming_not_paired/"
+        log_dir = "logs/rna_trimming_not_paired/",
+        seed_mismatches = config["seed_mismatches"],
+        palin_clip_thrs = config["palindrome_clip_threshold"],
+        simple_clip_thrs = config["simple_clip_threshold"],
+        window_size = config["window_size"],
+        required_qual = config["required_qual"],
+        leading = config["leading"],
+        trailing = config["trailing"],
+        minlen = config["minlen"],
     conda:
         "../envs/rnaseq.yaml"
     log:
@@ -65,20 +73,21 @@ rule rna_trimming_not_paired:
     shell:
         """
         mkdir -p results/trimmomatic_files/unpaired {params.log_dir}
-        java -jar /apps/TRIMMOMATIC/0.39/trimmomatic-0.39.jar SE -threads {params.threads} -phred33 -trimlog {log} {input.read} \
-        {output.file} \
-        ILLUMINACLIP:TruSeq3-SE:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:5:20 MINLEN:50
+        java -jar /apps/TRIMMOMATIC/0.39/trimmomatic-0.39.jar SE -threads {params.threads} -trimlog {log} {input.read} \
+        {output.file} ILLUMINACLIP:TruSeq3-SE:{params.seed_mismatches}:{params.palin_clip_thrs}:{params.simple_clip_thrs} \
+        SLIDINGWINDOW:{params.window_size}:{params.required_qual} \
+        LEADING:{params.leading} TRAILING:{params.trailing} MINLEN:{params.minlen}
         """
 # If we want to run in our PC, we need to remove "java -jar /apps/TRIMMOMATIC/0.39/trimmomatic-0.39.jar" and leave only "trimmomatic" 
 
-
-# This will perform the following in this order:
+# With default options, this will perform the following in this order:
 
 # Remove Illumina adapters provided in the TruSeq3-SE.fa file (provided). Initially Trimmomatic will look 
 # for seed matches (16 bases) allowing maximally 2 mismatches. These seeds will be extended and clipped 
 # if in the case of paired end reads a score of 30 is reached (about 50 bases), or in the case of single 
 # ended reads a score of 10, (about 17 bases). Scan the read with a 5-base wide sliding window, cutting when 
-# the average quality per base drops below 20. Drop reads which are less than 50 bases long after these steps
+# the average quality per base drops below 20. Drop reads which are less than 50 bases long after these steps.
+
 # Single-end mode requires 1 input files and outputs 1 file.
 
 
