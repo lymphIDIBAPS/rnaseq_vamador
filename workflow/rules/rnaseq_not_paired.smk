@@ -107,7 +107,9 @@ rule kallisto_quant_not_paired:
         threads = 6,
         output_dir = lambda wildcards, output: os.path.dirname(output.abundance),
         # "results/kallisto_files/unpaired/{sample}/"
-        log_dir = "logs/kallisto_quant_not_paired/"
+        log_dir = "logs/kallisto_quant_not_paired/",
+        length = config["fragment_length"],
+        sdev = config["sdev"]
     conda:
         "../envs/rnaseq.yaml"
     log:
@@ -123,5 +125,6 @@ rule kallisto_quant_not_paired:
     shell:
         """
         mkdir -p {params.output_dir} {params.log_dir}
-        kallisto quant -i {input.index_path} -o {params.output_dir} --single -l 260 -s 20 -t {params.threads} {input.sample_not_paired} >{log}
+        kallisto quant -i {input.index_path} -o {params.output_dir} --single \
+        -l {params.length} -s {params.sdev} -t {params.threads} {input.sample_not_paired} >{log}
         """

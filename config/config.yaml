@@ -23,3 +23,9 @@ leading: 3
 trailing: 3
 
 minlen: 50
+
+#### KALLISTO SINGLE END OPTIONS ####
+
+fragment_length: 260
+
+sdev: 20

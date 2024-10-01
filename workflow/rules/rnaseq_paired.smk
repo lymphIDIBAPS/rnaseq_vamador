@@ -96,7 +96,15 @@ rule rna_trimming:
         rev_unpaired = "results/trimmomatic_files/{sample}_rev_up.fq.gz"
     params:
         threads = 6,
-        log_dir = "logs/rna_trimming/"
+        log_dir = "logs/rna_trimming/",
+        seed_mismatches = config["seed_mismatches"],
+        palin_clip_thrs = config["palindrome_clip_threshold"],
+        simple_clip_thrs = config["simple_clip_threshold"],
+        window_size = config["window_size"],
+        required_qual = config["required_qual"],
+        leading = config["leading"],
+        trailing = config["trailing"],
+        minlen = config["minlen"],
     conda:
         "../envs/rnaseq.yaml"
     log:

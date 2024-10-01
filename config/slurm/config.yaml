@@ -5,8 +5,8 @@ default-resources:
     slurm_partition: main
     runtime: "'7200'" # must be not greater than 7200 if we want to run in debug qos
     nodes: 1
-    tasks: 20
-    cpus_per_task: 3
+    tasks: 1
+    cpus_per_task: 16
     mem_mb_per_cpu: 3G
     slurm_extra: "'--mail-user=baeza@recerca.clinic.cat --qos=debug'" #You must change the qos to cli to be able to request more resources
 executor: slurm
