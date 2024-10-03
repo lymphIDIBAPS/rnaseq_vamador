@@ -7,21 +7,24 @@ fastq_dir_paired_unmerged: "FASTQ/rna_paired/unmerged"
 fastq_dir_single_end: "FASTQ/single_end"
 
 #### TRIMMOMATIC OPTIONS ####
-
+## ILLUMINACLIP
 seed_mismatches: 2
 
 palindrome_clip_threshold: 30
 
 simple_clip_threshold: 10
 
+## SLIDINGWINDOW
 window_size: 5
-
 required_qual: 20
 
-leading: 3
+## LEADING
+leading_qual: 3
 
-trailing: 3
+## TRAILING
+trailing_qual: 3
 
+## MINLEN
 minlen: 50
 
 #### KALLISTO SINGLE END OPTIONS ####

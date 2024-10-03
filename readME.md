@@ -234,9 +234,47 @@ snakemake --profile config/slurm/ --use-envmodules
 ``` 
 This command above will run the pipeline with the configuration from the file located in ***/slgpfs/projects/group_folder/rna_seq_vamador/config/config.yaml***. Be shure to check and modify the configuration file to alter the pipeline with your desired options. 
 
-#### TO DO ####
-Add configuration to RNA trimming
+## Configuration of the pipeline
+### Trimmomatic
+In the configuration file we can adjust the options related with the trimmomatic tool.
+The current defult values are the same as those used by Marta Sureda. 
 
+#### ILUMINACLIP
+This step is used to find and remove Illumina adapters.
+
+1. Seed mismatches:  Specifies the maximum mismatch count which will still allow a full
+match to be performed.
+
+2. Palindrome clip threshold: specifies how accurate the match between the two 'adapter
+ligated' reads must be for PE palindrome read alignment.
+
+3. Simple clip threshold: pecifies how accurate the match between any adapter sequence must be against a read.
+
+#### SLIDINGWINDOW
+Perform a sliding window trimming, cutting once the average quality within the window falls
+below a threshold.
+1. Window Size: specifies the number of bases to average across.
+
+2. Required quality: specifies the average quality required.
+#### LEADING
+Remove low quality bases from the beginning. As long as a base has a value below this
+threshold the base is removed and the next base will be investigated.
+1. Leading quality: specifies the minimum quality required to keep a base.
+#### TRAILING
+Remove low quality bases from the end. As long as a base has a value below this threshold
+the base is removed and the next base will be investigated.
+1. Trailing quality: specifies the minimum quality required to keep a base.
+#### MINLEN
+This module removes reads that fall below the specified minimal length. If required, it should normally be after all other processing steps.
+1. Minimal length: specifies the minimum length of reads to be kept.
+
+### Kallisto Single End
+For the single end mode you need to supply the ``--single`` flag as well as the ``-l`` and ``-s``options. 
+
+``-l, --fragment-length=DOUBLE``: estimated average fragment length
+``-s, --sd=DOUBLE``: estimated standard deviation of fragment length
+
+### Cluster Configuration
 Remember to check the files in ***/config/slurm/config.yaml*** for the cluster configuration. Review all the items and in case something is not clear you can check [in this website](https://snakemake.github.io/snakemake-plugin-catalog/plugins/executor/slurm.html#advanced-resource-specifications) what each term means in the configuration. 
 
 ## Contributing
