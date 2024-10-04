@@ -3,8 +3,14 @@
 configfile: "config/config.yaml"
 
 
+# Define the directory containing the FASTQ files
+single_end_dir = config["fastq_dir_single_end"]
+
+# Define patterns to match specific files
+single_end_samples = glob_wildcards(f"{single_end_dir}/{{sample}}.fastq").sample
+
+# Define patterns to match specific files
 paired_samples = glob_wildcards("FASTQ/rna_paired/merged/{sample_paired}_mergedF.fastq").sample_paired
-single_end_samples = glob_wildcards("FASTQ/single_end/{sample}.fastq").sample
 
 
 ## paired_end_fastq_to_fastqc: quality control checks on unmerged paired end sequence data

@@ -4,7 +4,7 @@ configfile: "config/config.yaml"
 
 import os
 
-# Define the directory containing the FASTQ files
+# Define the directory containing the FASTQ unmerged files
 fastq_dir = config["fastq_dir_paired_unmerged"]
 
 # Define patterns to match specific files
