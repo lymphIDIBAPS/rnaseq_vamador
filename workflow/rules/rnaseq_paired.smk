@@ -102,8 +102,8 @@ rule rna_trimming:
         simple_clip_thrs = config["simple_clip_threshold"],
         window_size = config["window_size"],
         required_qual = config["required_qual"],
-        leading = config["leading"],
-        trailing = config["trailing"],
+        leading = config["leading_qual"],
+        trailing = config["trailing_qual"],
         minlen = config["minlen"],
     conda:
         "../envs/rnaseq.yaml"
