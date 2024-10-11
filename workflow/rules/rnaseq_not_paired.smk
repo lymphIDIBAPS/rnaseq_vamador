@@ -126,5 +126,5 @@ rule kallisto_quant_not_paired:
         """
         mkdir -p {params.output_dir} {params.log_dir}
         kallisto quant -i {input.index_path} -o {params.output_dir} --single \
-        -l {params.length} -s {params.sdev} -t {params.threads} {input.sample_not_paired} >{log}
+        -l {params.length} -s {params.sdev} -t {params.threads} {input.sample_not_paired} > {log}
         """

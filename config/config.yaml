@@ -1,9 +1,15 @@
 # threads: 24
 
-# Define the directory containing the FASTQ unmerged files
-fastq_dir_paired_unmerged: "FASTQ/rna_paired/unmerged"
+# Define the directory containing the paired end FASTQ files
+fastq_dir_paired_unmerged: "FASTQ/rna_paired/merged"
 
-# Define the directory containing the FASTQ files
+# Are there technical duplicates?
+technical_duplicates: false
+
+# Define the extension of the paired end samples:
+sample_extension: "_mergedF"
+
+# Define the directory containing the single end FASTQ files
 fastq_dir_single_end: "FASTQ/single_end"
 
 #### TRIMMOMATIC OPTIONS ####

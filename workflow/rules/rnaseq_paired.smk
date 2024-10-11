@@ -7,30 +7,33 @@ import os
 # Define the directory containing the FASTQ unmerged files
 fastq_dir = config["fastq_dir_paired_unmerged"]
 
+# Define the extension of the samples
+extension = config["sample_extension"]
+
 # Define patterns to match specific files
-paired_end_sample_name = glob_wildcards(f"{fastq_dir}/{{sample}}_1_1.fastq").sample
+paired_end_sample_name = glob_wildcards(f"{fastq_dir}/{{sample}}{extension}.fastq").sample
 
 
 ## merge_technical_replicates: merge data from L1_F and L2_F
 ## .fastq files must be located in a directory named FASTQ/rna_paired/unmerged
 ## output will be directed to a directory named FASTQ/rna_paired/merged
 
-
-rule merge_technical_replicates:
-    input:
-        L1_F = "FASTQ/rna_paired/unmerged/{sample}_1_1.fastq",
-        L2_F = "FASTQ/rna_paired/unmerged/{sample}_2_1.fastq",
-        L1_R = "FASTQ/rna_paired/unmerged/{sample}_1_2.fastq",
-        L2_R = "FASTQ/rna_paired/unmerged/{sample}_2_2.fastq",
-    output:
-        merged_F = "FASTQ/rna_paired/merged/{sample}_mergedF.fastq",
-        merged_R = "FASTQ/rna_paired/merged/{sample}_mergedR.fastq",
-    shell:
-        """
-        mkdir -p FASTQ/rna_paired/merged
-        cat {input.L1_F} {input.L2_F} > {output.merged_F}
-        cat {input.L1_R} {input.L2_R} > {output.merged_R}
-        """
+if config["technical_duplicates"]:
+    rule merge_technical_replicates:
+        input:
+            L1_F = "FASTQ/rna_paired/unmerged/{sample}_1_1.fastq",
+            L2_F = "FASTQ/rna_paired/unmerged/{sample}_2_1.fastq",
+            L1_R = "FASTQ/rna_paired/unmerged/{sample}_1_2.fastq",
+            L2_R = "FASTQ/rna_paired/unmerged/{sample}_2_2.fastq",
+        output:
+            merged_F = "FASTQ/rna_paired/merged/{sample}_mergedF.fastq",
+            merged_R = "FASTQ/rna_paired/merged/{sample}_mergedR.fastq",
+        shell:
+            """
+            mkdir -p FASTQ/rna_paired/merged
+            cat {input.L1_F} {input.L2_F} > {output.merged_F}
+            cat {input.L1_R} {input.L2_R} > {output.merged_R}
+            """
 
 
 ## sortmerna_paired: filter RNA
@@ -114,8 +117,9 @@ rule rna_trimming:
     shell:
         """
         mkdir -p results/trimmomatic_files {params.log_dir}
-        java -jar /apps/TRIMMOMATIC/0.39/trimmomatic-0.39.jar PE -threads {params.threads} -trimlog {log} {input.read} \
-        {output.file} ILLUMINACLIP:TruSeq3-PE:{params.seed_mismatches}:{params.palin_clip_thrs}:{params.simple_clip_thrs} \
+        java -jar /apps/TRIMMOMATIC/0.39/trimmomatic-0.39.jar PE -threads {params.threads} -trimlog {log} {input.forward} {input.rev} \
+        {output.forward_paired} {output.forward_unpaired} {output.rev_paired} {output.rev_unpaired} \
+        ILLUMINACLIP:TruSeq3-PE:{params.seed_mismatches}:{params.palin_clip_thrs}:{params.simple_clip_thrs} \
         SLIDINGWINDOW:{params.window_size}:{params.required_qual} \
         LEADING:{params.leading} TRAILING:{params.trailing} MINLEN:{params.minlen}
         """
@@ -197,5 +201,5 @@ rule kallisto_quant:
     shell:
         """
         mkdir -p {params.output_dir} {params.log_dir}
-        kallisto quant -i {input.index_path} -o {params.output_dir} -t {params.threads} {input.for_paired} {input.rev_paired} {log}
+        kallisto quant -i {input.index_path} -o {params.output_dir} -t {params.threads} {input.for_paired} {input.rev_paired} > {log}
         """
