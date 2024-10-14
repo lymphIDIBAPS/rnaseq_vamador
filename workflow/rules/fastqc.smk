@@ -7,10 +7,10 @@ configfile: "config/config.yaml"
 single_end_dir = config["fastq_dir_single_end"]
 
 # Define patterns to match specific files
-single_end_samples = glob_wildcards(f"{single_end_dir}/{{sample}}.fastq").sample
+single_end_samples = glob_wildcards(f"{single_end_dir}/{{sample}}.fastq.gz").sample
 
 # Define patterns to match specific files
-paired_samples = glob_wildcards("FASTQ/rna_paired/merged/{sample_paired}_mergedF.fastq").sample_paired
+paired_samples = glob_wildcards("FASTQ/rna_paired/merged/{sample_paired}_mergedF.fastq.gz").sample_paired
 
 
 ## paired_end_fastq_to_fastqc: quality control checks on unmerged paired end sequence data
@@ -20,10 +20,10 @@ paired_samples = glob_wildcards("FASTQ/rna_paired/merged/{sample_paired}_mergedF
 
 rule paired_end_fastq_to_fastqc:
     input:
-        "FASTQ/rna_paired/unmerged/{sample}_1_1.fastq",
-        "FASTQ/rna_paired/unmerged/{sample}_1_2.fastq",
-        "FASTQ/rna_paired/unmerged/{sample}_2_1.fastq",
-        "FASTQ/rna_paired/unmerged/{sample}_2_2.fastq",
+        "FASTQ/rna_paired/unmerged/{sample}_1_1.fastq.gz",
+        "FASTQ/rna_paired/unmerged/{sample}_1_2.fastq.gz",
+        "FASTQ/rna_paired/unmerged/{sample}_2_1.fastq.gz",
+        "FASTQ/rna_paired/unmerged/{sample}_2_2.fastq.gz",
     output:
         "FASTQC/{sample}/{sample}_1_1_fastqc.html",
         "FASTQC/{sample}/{sample}_1_1_fastqc.zip",
@@ -50,7 +50,7 @@ rule paired_end_fastq_to_fastqc:
 
 rule single_end_fastq_to_fastqc:
     input:
-        "FASTQ/single_end/{sample}.fastq",
+        "FASTQ/single_end/{sample}.fastq.gz",
     output:
         "FASTQC/single_end/{sample}/{sample}_fastqc.html",
         "FASTQC/single_end/{sample}/{sample}_fastqc.zip",
@@ -79,7 +79,7 @@ rule single_end_fastq_to_fastqc:
 
 rule filtered_fwd_rna_to_fastqc:
     input:
-        "results/sortmerna_files/rRNAf/{sample}_fwd.fq"
+        "results/sortmerna_files/rRNAf/{sample}_fwd.fq.gz"
     output:
         "FASTQC/sortmerna/filtered/{sample}_fwd/{sample}_fwd_fastqc.html",
         "FASTQC/sortmerna/filtered/{sample}_fwd/{sample}_fwd_fastqc.zip",
@@ -107,7 +107,7 @@ rule filtered_fwd_rna_to_fastqc:
 
 rule filtered_rev_rna_to_fastqc:
     input:
-        "results/sortmerna_files/rRNAf/{sample}_rev.fq"
+        "results/sortmerna_files/rRNAf/{sample}_rev.fq.gz"
     output:
         "FASTQC/sortmerna/filtered/{sample}_rev/{sample}_rev_fastqc.html",
         "FASTQC/sortmerna/filtered/{sample}_rev/{sample}_rev_fastqc.zip",
@@ -136,7 +136,7 @@ rule filtered_rev_rna_to_fastqc:
 
 rule filtered_unpaired_rna_to_fastqc:
     input:
-        "results/sortmerna_files/unpaired/rRNAf/{sample}.fq"
+        "results/sortmerna_files/unpaired/rRNAf/{sample}.fq.gz"
     output:
         "FASTQC/sortmerna/unpaired/filtered/{sample}/{sample}_fastqc.html",
         "FASTQC/sortmerna/unpaired/filtered/{sample}/{sample}_fastqc.zip",

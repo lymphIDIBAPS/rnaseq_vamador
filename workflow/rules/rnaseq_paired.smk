@@ -11,7 +11,7 @@ fastq_dir = config["fastq_dir_paired_unmerged"]
 extension = config["sample_extension"]
 
 # Define patterns to match specific files
-paired_end_sample_name = glob_wildcards(f"{fastq_dir}/{{sample}}{extension}.fastq").sample
+paired_end_sample_name = glob_wildcards(f"{fastq_dir}/{{sample}}{extension}.fastq.gz").sample
 
 
 ## merge_technical_replicates: merge data from L1_F and L2_F
@@ -21,13 +21,13 @@ paired_end_sample_name = glob_wildcards(f"{fastq_dir}/{{sample}}{extension}.fast
 if config["technical_duplicates"]:
     rule merge_technical_replicates:
         input:
-            L1_F = "FASTQ/rna_paired/unmerged/{sample}_1_1.fastq",
-            L2_F = "FASTQ/rna_paired/unmerged/{sample}_2_1.fastq",
-            L1_R = "FASTQ/rna_paired/unmerged/{sample}_1_2.fastq",
-            L2_R = "FASTQ/rna_paired/unmerged/{sample}_2_2.fastq",
+            L1_F = "FASTQ/rna_paired/unmerged/{sample}_1_1.fastq.gz",
+            L2_F = "FASTQ/rna_paired/unmerged/{sample}_2_1.fastq.gz",
+            L1_R = "FASTQ/rna_paired/unmerged/{sample}_1_2.fastq.gz",
+            L2_R = "FASTQ/rna_paired/unmerged/{sample}_2_2.fastq.gz",
         output:
-            merged_F = "FASTQ/rna_paired/merged/{sample}_mergedF.fastq",
-            merged_R = "FASTQ/rna_paired/merged/{sample}_mergedR.fastq",
+            merged_F = "FASTQ/rna_paired/merged/{sample}_mergedF.fastq.gz",
+            merged_R = "FASTQ/rna_paired/merged/{sample}_mergedR.fastq.gz",
         shell:
             """
             mkdir -p FASTQ/rna_paired/merged
@@ -44,12 +44,12 @@ if config["technical_duplicates"]:
 
 rule sortmerna_paired:
     input:
-        merged_F = "FASTQ/rna_paired/merged/{sample}_mergedF.fastq",
-        merged_R = "FASTQ/rna_paired/merged/{sample}_mergedR.fastq",
+        merged_F = "FASTQ/rna_paired/merged/{sample}_mergedF.fastq.gz",
+        merged_R = "FASTQ/rna_paired/merged/{sample}_mergedR.fastq.gz",
     output:
-        aligned = "results/sortmerna_files/rRNA/{sample}_rev.fq",
-        forward = "results/sortmerna_files/rRNAf/{sample}_fwd.fq",
-        other = "results/sortmerna_files/rRNAf/{sample}_rev.fq",
+        aligned = "results/sortmerna_files/rRNA/{sample}_rev.fq.gz",
+        forward = "results/sortmerna_files/rRNAf/{sample}_fwd.fq.gz",
+        other = "results/sortmerna_files/rRNAf/{sample}_rev.fq.gz",
     params:
         aligned = lambda wildcards, output: os.path.join(os.path.dirname(output.aligned), wildcards.sample),
         # "results/sortmerna_files/rRNA/{sample}"
@@ -90,8 +90,8 @@ rule sortmerna_paired:
 
 rule rna_trimming:
     input:
-        forward = "results/sortmerna_files/rRNAf/{sample}_fwd.fq",
-        rev = "results/sortmerna_files/rRNAf/{sample}_rev.fq"
+        forward = "results/sortmerna_files/rRNAf/{sample}_fwd.fq.gz",
+        rev = "results/sortmerna_files/rRNAf/{sample}_rev.fq.gz"
     output:
         forward_paired = "results/trimmomatic_files/{sample}_fwd_p.fq.gz",
         forward_unpaired = "results/trimmomatic_files/{sample}_fwd_up.fq.gz",
