@@ -8,7 +8,7 @@ import os
 single_end_dir = config["fastq_dir_single_end"]
 
 # Define patterns to match specific files
-single_end_sample_name = glob_wildcards(f"{single_end_dir}/{{sample}}.fastq").sample
+single_end_sample_name = glob_wildcards(f"{single_end_dir}/{{sample}}.fastq.gz").sample
 
 
 ## sortmerna_not_paired: filter RNA from non paired reads
@@ -20,10 +20,10 @@ single_end_sample_name = glob_wildcards(f"{single_end_dir}/{{sample}}.fastq").sa
 rule sortmerna_not_paired:
     input:
         ref = ["resources/rRNA_databases_v4/smr_v4.3_default_db.fasta"],
-        reads = "FASTQ/single_end/{sample}.fastq",
+        reads = "FASTQ/single_end/{sample}.fastq.gz",
     output:
-        aligned = "results/sortmerna_files/unpaired/rRNA/{sample}.fq",
-        other = "results/sortmerna_files/unpaired/rRNAf/{sample}.fq",
+        aligned = "results/sortmerna_files/unpaired/rRNA/{sample}.fq.gz",
+        other = "results/sortmerna_files/unpaired/rRNAf/{sample}.fq.gz",
         stats = "results/sortmerna_files/unpaired/rRNA/{sample}.log",
     params:
         extra = "--idx-dir ./idx",
@@ -50,7 +50,7 @@ rule sortmerna_not_paired:
 
 rule rna_trimming_not_paired:
     input:
-        read = "results/sortmerna_files/unpaired/rRNAf/{sample}.fq"
+        read = "results/sortmerna_files/unpaired/rRNAf/{sample}.fq.gz"
     output:
         file = "results/trimmomatic_files/unpaired/{sample}_fwd.fq.gz"
     params:
