@@ -14,6 +14,9 @@ The samples can be placed in any directory, but the path must be specified in th
 5. [Snakemake Environment](#snakemake-environment)
 6. [Clone the repository](#clone-the-repository)
 7. [Snakemake Usage](#snakemake-usage)
+8. [Run the pipeline in a HPC](#run-the-pipeline-in-a-hpc)
+9. [Configuration of the pipeline](#configuration-of-the-pipeline)
+10. [Cluster Configuration](#cluster-configuration)
 
 ## Installation
 
@@ -232,7 +235,9 @@ snakemake --profile config/slurm/ --use-envmodules -np
 # For a real run of the pipeline
 snakemake --profile config/slurm/ --use-envmodules
 ``` 
-This command above will run the pipeline with the configuration from the file located in ***/slgpfs/projects/group_folder/rna_seq_vamador/config/config.yaml***. Be shure to check and modify the configuration file to alter the pipeline with your desired options. 
+This command above will run the pipeline with the pipeline configuration from the file located in ***/slgpfs/projects/group_folder/rna_seq_vamador/config/config.yaml***. Be sure to check and modify the configuration file to alter the pipeline with your desired options.
+
+The cluster configuration file is located in ***/home/oscar/rnaseq/config/slurm/config.yaml***. Below you have all the options available to customize your cluster run.
 
 ## Configuration of the pipeline
 ### Trimmomatic
@@ -274,7 +279,7 @@ For the single end mode you need to supply the ``--single`` flag as well as the 
 ``-l, --fragment-length=DOUBLE``: estimated average fragment length
 ``-s, --sd=DOUBLE``: estimated standard deviation of fragment length
 
-### Cluster Configuration
+## Cluster Configuration
 Remember to check the files in ***/config/slurm/config.yaml*** for the cluster configuration. Review all the items and in case something is not clear you can check [in this website](https://snakemake.github.io/snakemake-plugin-catalog/plugins/executor/slurm.html#advanced-resource-specifications) what each term means in the configuration. 
 
 ## Contributing
