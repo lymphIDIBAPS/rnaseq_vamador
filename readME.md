@@ -2,7 +2,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/Programa-de-neoplasias-linfoides/rnaseq_virginia)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Programa-de-neoplasias-linfoides/rnaseq_virginia)
 ----
-This is a pipeline written in Python and bash, and with Snakemake as a workflow manager, that will output *kallisto* files (abundance.h5) from RNA seq samples. These samples can be in .fastq or compressed format. 
+This is a pipeline written in Python and bash, and with Snakemake as a workflow manager, that will output *kallisto* files (abundances of transcripts) from RNA-Seq data. These samples can be in .fastq or compressed format. 
 
 The samples can be placed in any directory, but the path must be specified in the ***config/config.yaml*** file. 
 
@@ -20,8 +20,10 @@ The samples can be placed in any directory, but the path must be specified in th
 
 ## Installation
 
-<!-- Use the package manager [miniconda](https://docs.anaconda.com/miniconda/) to install miniconda3. -->
+
 ### Linux
+<details><summary>Linux Installation</summary>
+
 #### Install Miniconda 3
 Open a Linux shell, then run these three commands to quickly and quietly download the latest 64-bit Linux miniconda 3 installer, rename it to a shorter file name, silently install, and then delete the installer.
 ```bash
@@ -47,6 +49,8 @@ conda --version
 conda list
 # outputs a list of packages installed in the current environment (base)
 ```
+</details>
+
 ---
 ### Windows
 <details><summary>Windows Installation</summary>
@@ -92,6 +96,7 @@ conda list
 ----
 ### macOS
 <details><summary>macOS Installation</summary>
+
 These four commands download the latest M1 version of the MacOS installer, rename it to a shorter file name, silently install, and then delete the installer:
 ```bash
 mkdir -p ~/miniconda3
@@ -240,6 +245,15 @@ This command above will run the pipeline with the pipeline configuration from th
 The cluster configuration file is located in ***/home/oscar/rnaseq/config/slurm/config.yaml***. Below you have all the options available to customize your cluster run.
 
 ## Configuration of the pipeline
+### Common Options
+
+1. Fastq directory paired unmerged: specify the directory containing the paired end unmerged FASTQ files
+
+2. Technical duplicates: specify if we must work with tecnical duplicates or not
+
+3. Sample extension: specify the suffix of the samples
+
+4. Fastq directory single end: specify the directory containing the single end FASTQ files
 ### Trimmomatic
 In the configuration file we can adjust the options related with the trimmomatic tool.
 The current defult values are the same as those used by Marta Sureda. 
@@ -247,7 +261,7 @@ The current defult values are the same as those used by Marta Sureda.
 #### ILUMINACLIP
 This step is used to find and remove Illumina adapters.
 
-1. Seed mismatches:  Specifies the maximum mismatch count which will still allow a full
+1. Seed mismatches:  specifies the maximum mismatch count which will still allow a full
 match to be performed.
 
 2. Palindrome clip threshold: specifies how accurate the match between the two 'adapter
@@ -264,19 +278,23 @@ below a threshold.
 #### LEADING
 Remove low quality bases from the beginning. As long as a base has a value below this
 threshold the base is removed and the next base will be investigated.
-1. Leading quality: specifies the minimum quality required to keep a base.
+
+Leading quality: specifies the minimum quality required to keep a base.
 #### TRAILING
 Remove low quality bases from the end. As long as a base has a value below this threshold
 the base is removed and the next base will be investigated.
-1. Trailing quality: specifies the minimum quality required to keep a base.
+
+Trailing quality: specifies the minimum quality required to keep a base.
 #### MINLEN
 This module removes reads that fall below the specified minimal length. If required, it should normally be after all other processing steps.
-1. Minimal length: specifies the minimum length of reads to be kept.
+
+Minimal length: specifies the minimum length of reads to be kept.
 
 ### Kallisto Single End
-For the single end mode you need to supply the ``--single`` flag as well as the ``-l`` and ``-s``options. 
+For the single end mode you need to supply the ``--single`` flag as well as the ``-l`` and ``-s``options: 
 
 ``-l, --fragment-length=DOUBLE``: estimated average fragment length
+
 ``-s, --sd=DOUBLE``: estimated standard deviation of fragment length
 
 ## Cluster Configuration
