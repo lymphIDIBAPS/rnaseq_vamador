@@ -1,4 +1,4 @@
-# threads: 24
+#### GENERAL CONFIGURATION ####
 
 # Define the directory containing the paired end FASTQ files
 fastq_dir_paired_unmerged: "FASTQ/rna_paired/merged"
@@ -11,6 +11,12 @@ sample_extension: "_mergedF"
 
 # Define the directory containing the single end FASTQ files
 fastq_dir_single_end: "FASTQ/single_end"
+
+# Perform FASTQC? (yes or no)
+run_fastqc: "yes"
+
+# Perform multiQC? (yes or no, run_fastqc must be yes)
+do_multiqc: "yes"
 
 #### TRIMMOMATIC OPTIONS ####
 ## ILLUMINACLIP
