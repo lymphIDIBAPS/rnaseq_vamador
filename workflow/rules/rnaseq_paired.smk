@@ -117,7 +117,7 @@ rule rna_trimming:
     shell:
         """
         mkdir -p results/trimmomatic_files {params.log_dir}
-        trimmomatic PE -threads {params.threads} -trimlog {log} {input.forward} {input.rev} \
+        java -jar /apps/TRIMMOMATIC/0.39/trimmomatic-0.39.jar PE -threads {params.threads} -trimlog {log} {input.forward} {input.rev} \
         {output.forward_paired} {output.forward_unpaired} {output.rev_paired} {output.rev_unpaired} \
         ILLUMINACLIP:TruSeq3-PE:{params.seed_mismatches}:{params.palin_clip_thrs}:{params.simple_clip_thrs} \
         SLIDINGWINDOW:{params.window_size}:{params.required_qual} \

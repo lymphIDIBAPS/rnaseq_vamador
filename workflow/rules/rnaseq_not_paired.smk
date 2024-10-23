@@ -39,8 +39,8 @@ rule sortmerna_not_paired:
     wrapper:
         # Use first line if we are running in an offline cluster, 
         # the second one if we are running it in an online machine
-        # "file:/slgpfs/projects/rcli/rcli186814/snakemake_wrappers/bio/sortmerna/"
-        "v3.14.0/bio/sortmerna"
+        "file:/slgpfs/projects/rcli/rcli186814/snakemake_wrappers/bio/sortmerna/"
+        # "v3.14.0/bio/sortmerna"
 
 
 ## rna_trimming_not_paired: trim and crop filtered data
@@ -73,7 +73,7 @@ rule rna_trimming_not_paired:
     shell:
         """
         mkdir -p results/trimmomatic_files/unpaired {params.log_dir}
-        trimmomatic SE -threads {params.threads} -trimlog {log} {input.read} \
+        java -jar /apps/TRIMMOMATIC/0.39/trimmomatic-0.39.jar SE -threads {params.threads} -trimlog {log} {input.read} \
         {output.file} ILLUMINACLIP:TruSeq3-SE:{params.seed_mismatches}:{params.palin_clip_thrs}:{params.simple_clip_thrs} \
         SLIDINGWINDOW:{params.window_size}:{params.required_qual} \
         LEADING:{params.leading} TRAILING:{params.trailing} MINLEN:{params.minlen}
