@@ -245,7 +245,7 @@ This command above will run the pipeline with the pipeline configuration from th
 The cluster configuration file is located in ***/home/oscar/rnaseq/config/slurm/config.yaml***. Below you have all the options available to customize your cluster run.
 
 ## Configuration of the pipeline
-### Common Options
+### General Configuration
 
 1. Fastq directory paired unmerged: specify the directory containing the paired end unmerged FASTQ files
 
@@ -254,8 +254,13 @@ The cluster configuration file is located in ***/home/oscar/rnaseq/config/slurm/
 3. Sample extension: specify the suffix of the samples
 
 4. Fastq directory single end: specify the directory containing the single end FASTQ files
+
+5. Perform FASTQC: specify if you want to run FASTQC quality control on the samples
+
+6. Perform multiQC: specify if you want to run multiQC quality control on the results from FASTQC, sortmerna and trimmomatic. Perform FASTQC must be set to yes.
+
 ### Trimmomatic
-In the configuration file we can adjust the options related with the trimmomatic tool.
+In this section of the configuration file we can adjust the options related with the trimmomatic tool.
 The current defult values are the same as those used by Marta Sureda. 
 
 #### ILUMINACLIP
@@ -279,16 +284,16 @@ below a threshold.
 Remove low quality bases from the beginning. As long as a base has a value below this
 threshold the base is removed and the next base will be investigated.
 
-Leading quality: specifies the minimum quality required to keep a base.
+1. Leading quality: specifies the minimum quality required to keep a base.
 #### TRAILING
 Remove low quality bases from the end. As long as a base has a value below this threshold
 the base is removed and the next base will be investigated.
 
-Trailing quality: specifies the minimum quality required to keep a base.
+1. Trailing quality: specifies the minimum quality required to keep a base.
 #### MINLEN
 This module removes reads that fall below the specified minimal length. If required, it should normally be after all other processing steps.
 
-Minimal length: specifies the minimum length of reads to be kept.
+1. Minimal length: specifies the minimum length of reads to be kept.
 
 ### Kallisto Single End
 For the single end mode you need to supply the ``--single`` flag as well as the ``-l`` and ``-s``options: 
@@ -304,6 +309,11 @@ Remember to check the files in ***/config/slurm/config.yaml*** for the cluster c
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
+
+## Author
+Developed by [@obaeza16](https://github.com/obaeza16), based on a pipeline written by Marta Sureda.
+
+Mantained by [Lymphoid neoplasms program, IDIBAPS](https://www.clinicbarcelona.org/en/idibaps/programs/lymphoid-neoplasms-programme) for the Virginia Amador group. 
 
 ## License
 
