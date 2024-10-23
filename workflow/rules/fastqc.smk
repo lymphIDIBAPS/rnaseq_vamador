@@ -26,7 +26,9 @@ rule paired_end_fastq_to_fastqc:
         "FASTQ/rna_paired/unmerged/{sample}_2_2.fastq.gz",
     output:
         "FASTQC/{sample}/{sample}_1_1_fastqc.html",
-        "FASTQC/{sample}/{sample}_1_1_fastqc.zip",
+        "FASTQC/{sample}/{sample}_1_2_fastqc.html",
+        "FASTQC/{sample}/{sample}_2_1_fastqc.html",
+        "FASTQC/{sample}/{sample}_2_2_fastqc.html",
     conda:
         "../envs/fastqc.yaml"
     log:

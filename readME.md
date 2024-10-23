@@ -172,7 +172,7 @@ To see the packages we have currently installed in the environment, we can with`
 
 1. Above the list of files, click Code.
 
-![image_code](image.png)
+![Imgur](https://i.imgur.com/FiesQMl.png)
 
 2. Copy the URL for the repository. To clone the repository using HTTPS, under "HTTPS", copy the link provided.
 3. Open a Terminal.

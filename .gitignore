@@ -7,6 +7,9 @@
 # Directory for FASTQC results
 FASTQC/
 
+# Directory for MULTIQC results
+MULTIQC/
+
 # Results directory
 results/
 
@@ -27,9 +30,6 @@ logs/
 *.fastq
 *.fq
 *.gz
-
-# Any images
-*.png
 
 # Any .tar.gz file
 *.tar.gz
