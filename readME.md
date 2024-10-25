@@ -1,6 +1,6 @@
 # RNA Seq Analysis Pipeline for V. Amador
-![GitHub last commit](https://img.shields.io/github/last-commit/Programa-de-neoplasias-linfoides/rnaseq_virginia)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Programa-de-neoplasias-linfoides/rnaseq_virginia)
+![GitHub last commit](https://img.shields.io/github/last-commit/lymphIDIBAPS/rnaseq_vamador)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/lymphIDIBAPS/rnaseq_vamador)
 ----
 This is a pipeline written in Python and bash, and with Snakemake as a workflow manager, that will output *kallisto* files (abundances of transcripts) from RNA-Seq data. These samples can be in .fastq or compressed format. 
 
@@ -177,10 +177,10 @@ To see the packages we have currently installed in the environment, we can with`
 2. Copy the URL for the repository. To clone the repository using HTTPS, under "HTTPS", copy the link provided.
 3. Open a Terminal.
 4. Change the current working directory to the location where you want the cloned directory. For example, ```cd rna_seq_vamador```. Make sure that the directory exists before you move into it.
-5. Type ```git clone https://github.com/Programa-de-neoplasias-linfoides/rnaseq_virginia.git```.
+5. Type ```git clone git@github.com:lymphIDIBAPS/rnaseq_vamador.git```.
 6. Press Enter to create your local clone.
 ```bash
-git clone https://github.com/Programa-de-neoplasias-linfoides/rnaseq_virginia.git
+git clone git@github.com:lymphIDIBAPS/rnaseq_vamador.git
 > Cloning into `rna_seq_vamador`...
 > remote: Counting objects: 10, done.
 > remote: Compressing objects: 100% (8/8), done.
