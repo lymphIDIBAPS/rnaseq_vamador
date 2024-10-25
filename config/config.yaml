@@ -16,7 +16,7 @@ fastq_dir_single_end: "FASTQ/single_end"
 run_fastqc: "yes"
 
 # Perform multiQC? (yes or no, run_fastqc must be yes)
-do_multiqc: "yes"
+run_multiqc: "yes"
 
 #### TRIMMOMATIC OPTIONS ####
 ## ILLUMINACLIP
