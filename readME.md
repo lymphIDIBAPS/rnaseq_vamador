@@ -192,6 +192,9 @@ When we have the cloned repository, we can proced and add our sample data to the
 
 In the same file we can edit the number of threads our computer has, so it will run adapted to the current resources we have available. 
 
+The rulegraph for our pipeline at date 25/10 is the following:
+![Imgur](https://imgur.com/nHn1LtU.png)
+
 ```bash
 # For a test run of the pipeline
 snakemake --use-conda -np
