@@ -14,7 +14,7 @@ single_end_sample_name = glob_wildcards(f"{single_end_dir}/{{sample}}.fastq.gz")
 ## sortmerna_not_paired: filter RNA from non paired reads
 ## .fastq files must be located in a directory named FASTQ/single_end
 ## output will be directed to a directory named results/sortmerna_files/unpaired/rRNA or /rRNAf, 
-## the first are aligned reads and the second rejected reads 
+## the first are ribosomal reads and the second are filtered reads
 
 
 rule sortmerna_not_paired:
@@ -41,6 +41,18 @@ rule sortmerna_not_paired:
         # the second one if we are running it in an online machine
         "file:/slgpfs/projects/rcli/rcli186814/snakemake_wrappers/bio/sortmerna/"
         # "v3.14.0/bio/sortmerna"
+
+#  Wrapper code available in: 
+#  https://snakemake-wrappers.readthedocs.io/en/v3.14.0/wrappers/sortmerna.html
+# 
+#  The correct --ref databases must be this one if we want to get the most astringent pipeline:
+#  --ref resources/rRNA_databases_v4/silva-bac-16s-id90.fasta --ref resources/rRNA_databases_v4/silva-bac-23s-id98.fasta 
+#  --ref resources/rRNA_databases_v4/silva-arc-16s-id95.fasta  --ref resources/rRNA_databases_v4/silva-arc-23s-id98.fasta 
+#  --ref resources/rRNA_databases_v4/silva-euk-18s-id95.fasta  --ref resources/rRNA_databases_v4/silva-euk-28s-id98.fasta 
+#  --ref resources/rRNA_databases_v4/rfam-5s-database-id98.fasta  --ref resources/rRNA_databases_v4/rfam-5.8s-database-id98.fasta
+# 
+#  However, I have found that the creator of the package recommends using only the following database:
+#  smr_v4.3_default_db.fasta , from:(https://github.com/sortmerna/sortmerna/issues/292)
 
 
 ## rna_trimming_not_paired: trim and crop filtered data

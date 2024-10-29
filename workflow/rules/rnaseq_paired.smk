@@ -39,7 +39,7 @@ if config["technical_duplicates"]:
 ## sortmerna_paired: filter RNA
 ## .fastq files must be located in a directory named FASTQ/rna_paired/merged
 ## output will be directed to a directory named results/sortmerna_files/rRNA or /rRNAf, 
-## the first are aligned reads and the second rejected reads 
+## the first are ribosomal reads and the second are filtered reads
 
 
 rule sortmerna_paired:
@@ -71,15 +71,14 @@ rule sortmerna_paired:
         rm -r ./kvdb/
         """
 
-# IDX Dir is the index directory, which will be built the first time we run sortmeRNA
-# --idx-dir ./idx
-
 #  The correct --ref databases must be this one if we want to get the most astringent pipeline:
-#  --ref resources/rRNA_databases_v4/silva-bac-16s-id90.fasta --ref resources/rRNA_databases_v4/silva-bac-23s-id98.fasta --ref resources/rRNA_databases_v4/silva-arc-16s-id95.fasta  --ref resources/rRNA_databases_v4/silva-arc-23s-id98.fasta --ref resources/rRNA_databases_v4/silva-euk-18s-id95.fasta  --ref resources/rRNA_databases_v4/silva-euk-28s-id98.fasta --ref resources/rRNA_databases_v4/rfam-5s-database-id98.fasta  --ref resources/rRNA_databases_v4/rfam-5.8s-database-id98.fasta
-
+#  --ref resources/rRNA_databases_v4/silva-bac-16s-id90.fasta --ref resources/rRNA_databases_v4/silva-bac-23s-id98.fasta 
+#  --ref resources/rRNA_databases_v4/silva-arc-16s-id95.fasta  --ref resources/rRNA_databases_v4/silva-arc-23s-id98.fasta 
+#  --ref resources/rRNA_databases_v4/silva-euk-18s-id95.fasta  --ref resources/rRNA_databases_v4/silva-euk-28s-id98.fasta 
+#  --ref resources/rRNA_databases_v4/rfam-5s-database-id98.fasta  --ref resources/rRNA_databases_v4/rfam-5.8s-database-id98.fasta
+# 
 #  However, I have found that the creator of the package recommends using only the following database:
 #  smr_v4.3_default_db.fasta , from:(https://github.com/sortmerna/sortmerna/issues/292)
-
 
 
 ## rna_trimming: trim and crop filtered data
